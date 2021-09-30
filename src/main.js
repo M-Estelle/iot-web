@@ -6,7 +6,9 @@ import store from './store'
 
 import'element-ui/lib/theme-chalk/index.css';
 import echarts from 'echarts';
-
+import $ from 'jquery';
+window.jQuery = $;
+window.$ = $;
 
 Vue.prototype.$echarts = echarts;
 Vue.use(ElementUI);

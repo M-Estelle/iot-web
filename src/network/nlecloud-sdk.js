@@ -5,11 +5,11 @@
  * Version: 1.0.0
  * Copyright (c) 2016 新大陆物联网云平台
  */
+import $ from 'jquery'
 (function () {
 
     var API_HOST = "http://api.nlecloud.com"; 
-    var AccessToken = '';
-
+    var AccessToken = ''
     function jsonp(url, fn, token, data, type)
     {
         url += (url.indexOf('?') > 0 ? '&' : '?') + 't=' + (new Date()).getTime();
@@ -349,8 +349,8 @@ String.prototype.format = function (args) {
     var reg;
     if (arguments.length > 0) {
         if (arguments.length === 1 && typeof (args) === "object") {
-            for (var key in args) {
-                if (args.hasOwnProperty(key) && args[key] !== undefined) {
+            for (const key in args) {
+                if (Object.prototype.hasOwnProperty.call(args, 'key') && args[key] !== undefined) {
                     reg = new RegExp("({)" + key + "(})", "g");
                     result = result.replace(reg, args[key]);
                 }

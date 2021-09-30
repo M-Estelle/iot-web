@@ -1,3 +1,4 @@
+import 
 <template>
   <div class="control-cartd">
     <el-card class="box-card">
@@ -47,7 +48,8 @@ export default {
   },
   computed:{
     isOpen(){
-      if(this.nowState==true){
+      if(this.nowState===true){
+
         return '开'
       }
       else{
