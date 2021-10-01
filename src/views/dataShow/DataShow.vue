@@ -11,7 +11,8 @@
     <!--   历史数据搜索模块    -->
     <div class="search label">数据搜索</div>
     <div class="search aborder">
-      <more-form></more-form>
+<!--      <more-form></more-form>-->
+      <line-form></line-form>
     </div>
 
     <new-data-list
@@ -30,14 +31,15 @@
 <script>
 import achat from "@/components/achat";
 import NewDataList from "@/views/dataShow/childComonts/NewDataList";
-import MoreForm from "@/components/content/MoreForm";
+// import MoreForm from "@/components/content/MoreForm";
+import LineForm from "../../components/content/LineForm";
 
 export default {
   name: "DataShow",
   components:{
     achat,
     NewDataList,
-    MoreForm
+    LineForm
   },
   data() {
     return {

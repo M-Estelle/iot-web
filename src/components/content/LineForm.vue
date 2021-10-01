@@ -4,6 +4,7 @@
       <el-form-item label="查询">
         <el-input v-model="formInline.user" placeholder="输入内容"></el-input>
       </el-form-item>
+
       <el-form-item>
         <el-button type="primary" @click="onSubmit">查询</el-button>
       </el-form-item>

@@ -41,7 +41,7 @@ export default {
     }
   },
   mounted() {
-    console.log(this.comWidth)
+    // console.log(this.comWidth)
   }
 }
 </script>

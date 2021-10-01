@@ -1,13 +1,33 @@
 <template>
   <div class="mul-control">
     <!--控件控制模块-->
-    <el-input v-model="input" placeholder="用户名" style="width: 500px;margin-left: 90px;margin-bottom: 100px"></el-input>
-    <el-input v-model="input2" placeholder="密码" style="width: 500px;margin-left: 90px;margin-bottom: 100px"></el-input>
-    <el-button @click="login">登录</el-button>
     <div class="search">
-      <control-card ref="card1" :name="'传感器1'" :set-valus="[{title:'最低',value:0},{title:'最高',value:0}]" class="control-card">
-        <div slot="title">传感器1</div>
+      <div class="demo-input-suffix">
+        用户名：
+        <el-input v-model="input" placeholder="用户名"  ></el-input>
+      </div>
+      <div class="demo-input-suffix">
+        密码：
+        <el-input v-model="input2" placeholder="密码" ></el-input>
+      </div>
+
+      <el-button @click="login">登录</el-button>
+    </div>
+    <div class="search">
+      <el-button type="primary" plain @click="getSensors">生成传感器</el-button>
+    </div>
+    <div v-if="sensors.length!==0" class="search">
+
+      <control-card
+          v-for="(item,index) in sensors"
+          ref="card" :key="index"
+          :name="'item.ApiTag'"
+          :Api="item"
+          class="control-card">
+        <div slot="title">{{item.Name}}</div>
       </control-card>
+
+
     </div>
 
     <div class="search">
@@ -26,8 +46,11 @@ export default {
   name: "MulControl",
   data() {
     return {
-      input: '',
-      input2:''
+      input: '18573242037',
+      input2:'tozuki160308',
+      sdkTest:null,
+      haveSensor:false,
+      sensors:[]
     }
   },
   components:{
@@ -36,16 +59,41 @@ export default {
   },
   methods:{
     changeAuto(state){
-      console.log(state)
-      $.click()
-      this.$refs.card1.setCanMod(!state)
+      // console.log(state)
+      // $.click()
+      // console.log(this.$refs.card)
+      for(let i=0;i<this.$refs.card.length;i++){
+        // console.log(this.$refs.card[i])
+        this.$refs.card[i].setCanMod(!state)
+      }
     },
     login(){
       // eslint-disable-next-line no-undef
-      const sdkTest = new NLECloudAPI()
-      sdkTest.userLogin(this.input,this.input2,true).completed(function(res){
+      this.sdkTest = new NLECloudAPI()
+      this.sdkTest.userLogin(this.input,this.input2,true).completed(function(res){
         console.log(res.ResultObj.AccessToken)
+        console.log($)
       })
+    },
+    getSensors(){
+      let that=this
+      this.sdkTest.getProjectSensors(291210).completed(function (res){
+        console.log(res.ResultObj)
+        that.sensors=res.ResultObj.filter(item => item.Groups ===2 );
+        console.log(that.sensors)
+      })
+    }
+  },
+  watch:{
+    sensors:{
+      handler(val, oldVal){
+        console.log(oldVal)
+       if(val.length!==0){
+         this.haveSensor=true
+       }
+
+      },
+      deep:true
     }
   }
 }

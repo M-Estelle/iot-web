@@ -19,7 +19,7 @@ export default {
   },
   mounted() {
     /*ECharts图表*/
-    console.log(this.$refs.chats)
+    // console.log(this.$refs.chats)
 
     let myChart = echarts.init(this.$refs.chats);
     this.theChart=myChart

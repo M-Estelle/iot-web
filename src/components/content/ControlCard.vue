@@ -8,22 +8,22 @@ import
       </div>
 
       <!-- 显示控件当前状态     -->
-      <div  class="text item">
-        <span class="line-title">状态：</span><span>{{isOpen}}</span>
-      </div>
+<!--      <div  class="text item">-->
+<!--        <span class="line-title">状态：</span><span>{{isOpen}}</span>-->
+<!--      </div>-->
 
-      <!--根据传入参数setValus决定是否需要设置阈值，几个阈值-->
-      <div  class="text item" v-for="item in setValus" :key="item.title">
-        <div class="line-title">{{item.title}}：</div>
+      <!--如果参数类型为4的话，显示输入框型更改方式-->
+      <div v-if="Api.OperType===4"  class="text item">
+        <div class="line-title">{{Api.Name}}：</div>
         <el-input
             size="small"
-            v-model="item.value"
+            v-model="valus"
             :disabled="canMod"
             placeholder="请输入内容"></el-input>
       </div>
 
-      <!--切换当前控件状态-->
-      <div  class="text item">
+      <!--如果参数类型为1的话，显示开关型更改方式-->
+      <div v-if="Api.OperType===1"  class="text item">
         <span class="line-title">切换状态：</span>
         <el-switch
             class="paddingtop"
@@ -32,6 +32,10 @@ import
             active-text="on"
             inactive-text="off">
       </el-switch>
+      </div>
+
+      <div class="item">
+        <el-button type="primary" :disabled="canMod" @click="submitChange" plain>提交设置</el-button>
       </div>
     </el-card>
   </div>
@@ -43,7 +47,9 @@ export default {
   data(){
     return{
       canMod:false, //当前状态是否可以更改，可以为false
-      nowState:true //当前控件状态 开或关
+      nowState:true, //当前控件状态 开或关
+      setValus:null,
+      valus:''
     }
   },
   computed:{
@@ -64,10 +70,11 @@ export default {
         return '';
       }
     },
-    setValus:{
-      type:Array,
+
+    Api:{
+      type:Object,
       default(){
-        return [];
+        return null;
       }
     }
   },
@@ -77,6 +84,9 @@ export default {
       this.canMod=false
       else
         this.canMod=true
+    },
+    submitChange(){
+      console.log(this.Api)
     }
   }
 }
@@ -100,7 +110,7 @@ export default {
 }
 
 .line-title{
-  width: 70px;
+  width: 90px;
 }
 .clearfix:before,
 .clearfix:after {

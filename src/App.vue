@@ -2,7 +2,9 @@
   <div id="app">
     <left-nav></left-nav>
     <div class="right">
-      <router-view></router-view>
+      <keep-alive>
+        <router-view></router-view>
+      </keep-alive>
     </div>
   </div>
 </template>
