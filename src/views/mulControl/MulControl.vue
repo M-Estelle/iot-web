@@ -40,15 +40,14 @@
 <script>
 import ControlCard from "@/components/content/ControlCard";
 import AutoControl from "@/views/mulControl/childComponent/AutoControl";
-import $ from 'jquery'
-import "@/network/nlecloud-sdk"
+import {sdkContest} from "@/common/const"
+
 export default {
   name: "MulControl",
   data() {
     return {
       input: '18573242037',
       input2:'tozuki160308',
-      sdkTest:null,
       haveSensor:false,
       sensors:[]
     }
@@ -69,15 +68,15 @@ export default {
     },
     login(){
       // eslint-disable-next-line no-undef
-      this.sdkTest = new NLECloudAPI()
-      this.sdkTest.userLogin(this.input,this.input2,true).completed(function(res){
+      sdkContest.userLogin(this.input,this.input2,true).completed(function(res){
         console.log(res.ResultObj.AccessToken)
-        console.log($)
+        // console.log($)
       })
+
     },
     getSensors(){
       let that=this
-      this.sdkTest.getProjectSensors(291210).completed(function (res){
+      sdkContest.getProjectSensors(291210).completed(function (res){
         console.log(res.ResultObj)
         that.sensors=res.ResultObj.filter(item => item.Groups ===2 );
         console.log(that.sensors)

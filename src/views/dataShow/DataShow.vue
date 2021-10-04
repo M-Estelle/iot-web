@@ -2,16 +2,16 @@
   <div class="data-view">
 
     <!--    实时数据展示      -->
-    <div class="search label">实时数据</div>
+    <div class="search label">实时数据<el-button type="primary" class="floatr" @click="getCurrentData">获取数据</el-button></div>
     <new-data-list
-        :dataTitle="[{title: '温度',name:'temproture'},{title: '名字',name:'name'}]"
+        :dataTitle="title"
         class="search"
-        :new-data="[]"/>
+        :new-data="tableData"/>
 
     <!--   历史数据搜索模块    -->
     <div class="search label">数据搜索</div>
     <div class="search aborder">
-<!--      <more-form></more-form>-->
+    <!--      <more-form></more-form>-->
       <line-form></line-form>
     </div>
 
@@ -29,10 +29,14 @@
 </template>
 
 <script>
+
 import achat from "@/components/achat";
 import NewDataList from "@/views/dataShow/childComonts/NewDataList";
 // import MoreForm from "@/components/content/MoreForm";
 import LineForm from "../../components/content/LineForm";
+
+import {dataTitle,sdkContest} from "@/common/const";
+
 
 export default {
   name: "DataShow",
@@ -44,13 +48,14 @@ export default {
   data() {
     return {
       //图像数据1
-      title:[{title: '日期',name:'date' },{title: '名字',name:'name'},{title: '地址',name:'address'}],
+      title:[],
+      tableData: [],
       list1: {
         legend: {},
         tooltip: {},
         dataset: {
           // 提供一份数据。
-          dimensions: [],//每个x轴点显示几个数据 'product', '2015', '2016', '2017'
+          dimensions: ['date'],//每个x轴点显示几个数据 'product', '2015', '2016', '2017'
           source: [
             ['Matcha Latte', 43.3, 85.8, 93.7],
             ['Milk Tea', 83.1, 73.4, 55.1],
@@ -66,37 +71,58 @@ export default {
         series: []
       },
 
-      tableData: []
     }
   },
   methods:{
     newCharts(){
-      for(let item in this.title)
-      this.list1.dataset.dimensions.push(item.title)
+      for(let item of this.title) {
+        // console.log(item.name)
+        if(item.name!=='date')
+        this.list1.dataset.dimensions.push(item.name)
+      }
+      console.log(this.list1.dataset.dimensions)
 
       this.list1.dataset.source=[]
-      this.list1.dataset.source.push(['9.28', 43.3, 85.8])
-      this.list1.dataset.source.push(['9.29', 86.4, 65.2])
+      for(let item of this.tableData) {
+        this.list1.dataset.source.push(item)
+      }
+      console.log(this.list1.dataset.source)
+      // this.list1.dataset.source.push(['9.29', 86.4, 65.2])
 
-      for(let i=0;i<this.title.length-1;i++){
+      for(let i=1;i<this.title.length-1;i++){
         this.list1.series.push({type: 'line'})
       }
       console.log(this.list1)
       this.$refs.chart.changeCharts(this.list1)
     },
     getCurrentData(){
-      // getPrize().then(res => {
-      //   console.log(res)
-      //   this.$router.replace({
-      //     path: '/prize',
-      //     query: {
-      //       url: res.data.url
-      //     }
-      //   })
-      // })
+      let that=this
+
+      sdkContest.getDevicesDatas('322860 ').completed(function(res){
+        // console.log(res.ResultObj[0].Datas)
+        let beautify={}
+        let myDate = new Date();
+        beautify['date']=myDate.toLocaleTimeString();
+        for (let item of res.ResultObj[0].Datas){
+          beautify[item.ApiTag]=item.Value
+        }
+        that.tableData.push(beautify)
+        // console.log(that.tableData)
+      })
+    }
+  },
+  created() {
+    this.title=dataTitle
+  },
+  watch:{
+    tableDate:{
+      handler(val, oldVal){
+        console.log(oldVal)
+        console.log(val)
+      },
+      deep:true //true 深度监听
     }
   }
-
 }
 </script>
 
