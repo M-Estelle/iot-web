@@ -9,11 +9,26 @@
         class="search"
         :new-data="tableData"/>
 
+    <!-- 实时数据图表  <el-button @click="newCharts" type="primary" plain>生成图表</el-button> -->
+    <div class="search label">是否展示实时数据图表
+      <el-switch
+        :change="newCharts"
+        v-model="showCurrentChart"
+        active-text="on"
+        inactive-text="off">
+      </el-switch>
+      <el-button @click="newCharts" type="primary" plain>生成图表</el-button>
+    </div>
+    <div class="search clearfix min" v-if="showCurrentChart">
+      <achat :chat-data="list1" ref="chart"></achat>
+    </div>
+
     <!--   历史数据搜索模块    -->
     <div class="search label">模糊数据搜索</div>
     <div class="search aborder">
       <more-form @showSearchData="searchData"></more-form>
     </div>
+
 
     <new-data-list
         :dataTitle="searchTitle"
@@ -21,11 +36,24 @@
         :new-data="tableSearch"
         :spanArr="spanArr"/>
 
-    <!-- 图表-->
-    <div class="search label">统计数据     <el-button @click="newCharts" type="primary" plain>生成图表</el-button></div>
-    <div class="search clearfix min">
-      <achat :chat-data="list1" ref="chart"></achat>
+    <!-- 搜索数据图表  <el-button @click="newCharts" type="primary" plain>生成图表</el-button> -->
+    <div class="search label">是否展示搜索数据图表
+      <el-switch
+          :change="newCharts"
+          v-model="showSearchChart"
+          active-text="on"
+          inactive-text="off">
+      </el-switch>
+      <el-button @click="SearchCharts" type="primary" plain>生成图表</el-button>
     </div>
+    <div class="search clearfix min" v-if="showSearchChart">
+      <template v-for="item in list2">
+<!--        hello {{item.ApiTag}} {{item.PointDTO}}-->
+        <achat :title="item.ApiTag" :key="item.ApiTag" :ChatData="item.PointDTO"></achat>
+      </template>
+    </div>
+
+
   </div>
 </template>
 
@@ -54,6 +82,9 @@ export default {
       searchTitle:[],
       tableSearch:[],
       spanArr:[],
+      showCurrentChart:false,
+      showSearchChart:false,
+      list2:[],
       list1: {
         legend: {},
         tooltip: {},
@@ -78,31 +109,35 @@ export default {
     }
   },
   methods:{
+    SearchCharts(){
+      console.log('1')
+    },
     newCharts(){
-      for(let item of this.title) {
-        // console.log(item.name)
-        if(item.name!=='date')
-        this.list1.dataset.dimensions.push(item.name)
-      }
+        for (let item of this.title) {
+          // console.log(item.name)
+          if (item.name !== 'date')
+            this.list1.dataset.dimensions.push(item.name)
+        }
 
-      this.list1.dataset.source=[]
-      for(let item of this.tableData) {
-        this.list1.dataset.source.push(item)
-      }
-      console.log(this.list1.dataset.source)
-      // this.list1.dataset.source.push(['9.29', 86.4, 65.2])
+        this.list1.dataset.source = []
+        for (let item of this.tableData) {
+          this.list1.dataset.source.push(item)
+        }
+        console.log(this.list1.dataset.source)
+        // this.list1.dataset.source.push(['9.29', 86.4, 65.2])
 
-      for(let i=1;i<this.title.length-1;i++){
-        this.list1.series.push({type: 'line'})
-      }
-      console.log(this.list1)
-      this.$refs.chart.changeCharts(this.list1)
+        for (let i = 1; i < this.title.length - 1; i++) {
+          this.list1.series.push({type: 'line'})
+        }
+        console.log(this.list1)
+        this.$refs.chart.changeCharts(this.list1)
+
     },
     getCurrentData(){
       let that=this
 
       sdkContest.getDevicesDatas('322860 ').completed(function(res){
-        console.log(res.ResultObj[0].Datas)
+        // console.log(res.ResultObj[0].Datas)
         let beautify={}
         let myDate = new Date();
         beautify['date']=myDate.toLocaleTimeString();
@@ -115,8 +150,10 @@ export default {
     },
     searchData(list){
       console.log(list)
+      // this.list2=list
       let arr=[]
       for(let i=0;i<list.length;i++){
+        this.list2.push(list[i])
          arr.push(list[i].PointDTO.length)
         for(let j=0;j<list[i].PointDTO.length;j++){
           if(j!==0) {
