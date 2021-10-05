@@ -3,22 +3,23 @@
 
     <!--    实时数据展示      -->
     <div class="search label">实时数据<el-button type="primary" class="floatr" @click="getCurrentData">获取数据</el-button></div>
+
     <new-data-list
         :dataTitle="title"
         class="search"
         :new-data="tableData"/>
 
     <!--   历史数据搜索模块    -->
-    <div class="search label">数据搜索</div>
+    <div class="search label">模糊数据搜索</div>
     <div class="search aborder">
-    <!--      <more-form></more-form>-->
-      <line-form></line-form>
+      <more-form @showSearchData="searchData"></more-form>
     </div>
 
     <new-data-list
-        :dataTitle="title"
+        :dataTitle="searchTitle"
         class="search"
-        :new-data="[]"/>
+        :new-data="tableSearch"
+        :spanArr="spanArr"/>
 
     <!-- 图表-->
     <div class="search label">统计数据     <el-button @click="newCharts" type="primary" plain>生成图表</el-button></div>
@@ -32,10 +33,10 @@
 
 import achat from "@/components/achat";
 import NewDataList from "@/views/dataShow/childComonts/NewDataList";
-// import MoreForm from "@/components/content/MoreForm";
-import LineForm from "../../components/content/LineForm";
+import MoreForm from "@/components/content/MoreForm";
+// import LineForm from "../../components/content/LineForm";
 
-import {dataTitle,sdkContest} from "@/common/const";
+import {dataTitle,sdkContest,searchTitle} from "@/common/const";
 
 
 export default {
@@ -43,13 +44,16 @@ export default {
   components:{
     achat,
     NewDataList,
-    LineForm
+    MoreForm
   },
   data() {
     return {
       //图像数据1
       title:[],
       tableData: [],
+      searchTitle:[],
+      tableSearch:[],
+      spanArr:[],
       list1: {
         legend: {},
         tooltip: {},
@@ -80,7 +84,6 @@ export default {
         if(item.name!=='date')
         this.list1.dataset.dimensions.push(item.name)
       }
-      console.log(this.list1.dataset.dimensions)
 
       this.list1.dataset.source=[]
       for(let item of this.tableData) {
@@ -99,7 +102,7 @@ export default {
       let that=this
 
       sdkContest.getDevicesDatas('322860 ').completed(function(res){
-        // console.log(res.ResultObj[0].Datas)
+        console.log(res.ResultObj[0].Datas)
         let beautify={}
         let myDate = new Date();
         beautify['date']=myDate.toLocaleTimeString();
@@ -109,10 +112,27 @@ export default {
         that.tableData.push(beautify)
         // console.log(that.tableData)
       })
-    }
+    },
+    searchData(list){
+      console.log(list)
+      let arr=[]
+      for(let i=0;i<list.length;i++){
+         arr.push(list[i].PointDTO.length)
+        for(let j=0;j<list[i].PointDTO.length;j++){
+          if(j!==0) {
+            arr.push(0);
+          }
+          let item={'ApiTag':list[i].ApiTag,'Value':list[i].PointDTO[j].Value,'RecordTime':list[i].PointDTO[j].RecordTime}
+          this.tableSearch.push(item)
+        }
+      }
+      this.spanArr=arr
+    },
+
   },
   created() {
     this.title=dataTitle
+    this.searchTitle=searchTitle
   },
   watch:{
     tableDate:{

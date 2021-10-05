@@ -77,16 +77,16 @@ export default {
     getSensors(){
       let that=this
       sdkContest.getProjectSensors(291210).completed(function (res){
-        console.log(res.ResultObj)
+        // console.log(res.ResultObj)
         that.sensors=res.ResultObj.filter(item => item.Groups ===2 );
-        console.log(that.sensors)
+        // console.log(that.sensors)
       })
     }
   },
   watch:{
     sensors:{
+      // eslint-disable-next-line no-unused-vars
       handler(val, oldVal){
-        console.log(oldVal)
        if(val.length!==0){
          this.haveSensor=true
        }

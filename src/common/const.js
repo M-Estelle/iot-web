@@ -16,3 +16,9 @@ export const dataTitle=[
     {title: '下限温度控制',name:'temp_low_ctrl'},
     {title: '空调开关',name:'air_switch_ctrl'},
 ]
+
+export const searchTitle=[
+    {title: '传感器名称',name:'ApiTag'},
+    {title: '值',name:'Value'},
+    {title: '记录时间',name:'RecordTime'},
+]

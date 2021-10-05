@@ -2,17 +2,16 @@
 <div cl="left-nav">
 
       <el-menu
-          default-active="1"
+          :default-active="activeIndex"
           class="el-menu-vertical-demo leftnav"
-          @open="handleOpen"
-          @close="handleClose">
+          :router="true">
 
-        <el-menu-item @click="oneClick" index="1">
+        <el-menu-item  index="/mulControl">
             <i class="el-icon-location"></i>
             <span>模块控制</span>
         </el-menu-item>
 
-        <el-menu-item @click="twoClick" index="2">
+        <el-menu-item  index="/DataShow">
           <i class="el-icon-menu"></i>
           <span slot="title">数据显示</span>
         </el-menu-item>
@@ -35,6 +34,12 @@
 <script>
 export default {
   name: "leftNav",
+  data(){
+    return {
+      activeIndex: '/mulControl',
+      title: '模块控制'
+    }
+  },
   methods: {
     oneClick(){
       this.$router.replace('/mulControl')
@@ -42,12 +47,11 @@ export default {
     twoClick(){
       this.$router.replace('/DataShow')
     },
-    handleOpen(key, keyPath) {
-      console.log(key, keyPath);
-    },
-    handleClose(key, keyPath) {
-      console.log(key, keyPath);
-    }
+
+  },
+  mounted() {
+    this.activeIndex = window.location.pathname;
+    // console.log(this.$route.path)
   }
 }
 </script>

@@ -42,6 +42,7 @@ import
 </template>
 
 <script>
+import {sdkContest} from "@/common/const"
 export default {
   name: "ControlCard",
   data(){
@@ -86,7 +87,17 @@ export default {
         this.canMod=true
     },
     submitChange(){
-      console.log(this.Api)
+      // console.log(this.Api)
+      let params;
+      if(this.Api.OperType==4){
+        params=this.valus
+      }
+      else{
+        params=this.nowState
+      }
+      sdkContest.Cmds('322860',this.Api.ApiTag,params).completed(function(res){
+        console.log(res)
+      })
     }
   }
 }
