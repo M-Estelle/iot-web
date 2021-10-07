@@ -76,30 +76,23 @@ export default {
   data() {
     return {
       //图像数据1
-      title:[],
-      tableData: [],
-      searchTitle:[],
-      tableSearch:[],
-      spanArr:[],
-      showCurrentChart:false,
-      showSearchChart:false,
-      list2:[],
+      title:[],//实时数据图表的表头
+      tableData: [],//实时数据图表的数据
+      searchTitle:[],//搜索数据图表的表头
+      tableSearch:[],//搜索数据图表的数据
+      spanArr:[],//搜索数据表格的合并行的数组
+      showCurrentChart:false,//是否展示实时数据图表
+      showSearchChart:false,//是否展示搜索数据的图表
+      list2:[],//搜索数据表格的内容
       list1: {
         legend: {},
         tooltip: {},
         dataset: {
           // 提供一份数据。
-          dimensions: ['date'],//每个x轴点显示几个数据 'product', '2015', '2016', '2017'
-          source: [
-            ['Matcha Latte', 43.3, 85.8, 93.7],
-            ['Milk Tea', 83.1, 73.4, 55.1],
-            ['Cheese Cocoa', 86.4, 65.2, 82.5],
-            ['Walnut Brownie', 72.4, 53.9, 39.1]
-          ]//第一个值为x轴上的值，后面为点上的值
+          dimensions: ['date'],
+          source: []//第一个值为x轴上的值，后面为点上的值
         },
-        // 声明一个 X 轴，类目轴（category）。默认情况下，类目轴对应到 dataset 第一列。
         xAxis: {type: 'category'},
-        // 声明一个 Y 轴，数值轴。
         yAxis: {},
         // 声明多个 bar 系列，默认情况下，每个系列会自动对应到 dataset 的每一列。{type: 'bar'}, {type: 'bar'},{type: 'bar'}
         series: []
@@ -108,9 +101,12 @@ export default {
     }
   },
   methods:{
-    SearchCharts(){
-      console.log('1')
-    },
+   /*
+   生成实时数据的图表
+   1.插入表头
+   2.插入图表数据
+   3.生成图表
+    */
     newCharts(){
         for (let item of this.title) {
           // console.log(item.name)
@@ -122,16 +118,19 @@ export default {
         for (let item of this.tableData) {
           this.list1.dataset.source.push(item)
         }
-        // console.log(this.list1.dataset.source)
-        // this.list1.dataset.source.push(['9.29', 86.4, 65.2])
-
         for (let i = 1; i < this.title.length - 1; i++) {
           this.list1.series.push({type: 'line'})
         }
+
         // console.log(this.list1)
         this.$refs.chart.changeCharts(this.list1)
 
     },
+    /*
+    1.获取实时数据
+    2.转化数据格式
+    3.往表格中插入数据
+     */
     getCurrentData(){
       let that=this
 
@@ -147,6 +146,11 @@ export default {
         // console.log(that.tableData)
       })
     },
+    /*
+    当搜索模块的组件检测到数据获取成功时调用
+    1.生成搜索数据表格的合并行的数组
+    2.将数据渲染到图表视图上
+     */
     searchData(list){
       console.log(list)
       // this.list2=list
@@ -167,18 +171,10 @@ export default {
 
   },
   created() {
+    //从const文件夹读取表头信息
     this.title=dataTitle
     this.searchTitle=searchTitle
   },
-  watch:{
-    tableDate:{
-      handler(val, oldVal){
-        console.log(oldVal)
-        console.log(val)
-      },
-      deep:true //true 深度监听
-    }
-  }
 }
 </script>
 
