@@ -41,36 +41,31 @@ export default {
         return ''
       }
     },
-    ChatData:{
-      type:Array,
-      default() {
-        return [];
-      }
-    },
+    ChatData:{},
   },
   watch:{
     // eslint-disable-next-line no-unused-vars
-    title(val, oldVal){
-      this.list.title.text=val;
-      console.log(this.list)
-    },
-    ChatData:{//深度监听，可监听到对象、数组的变化
-      // eslint-disable-next-line no-unused-vars
-      handler(val, oldVal){
-        this.dataset.dimensions=[]
-        for(let item of Object.keys(val[0]) ){
-          this.dataset.dimensions.push(item)
-        }
-        this.list.dataset.source=[]
-        for (let i=0;i<val.length;i++){
-          this.list.dataset.source.push(val[i])
-        }
-        console.log(this.list)
-        this.theChart.setOption(this.list)
-
-      },
-      deep:true //true 深度监听
-    }
+    // title(val, oldVal){
+    //   this.list.title.text=val;
+    //   console.log(this.list)
+    // },
+    // ChatData:{//深度监听，可监听到对象、数组的变化
+    //   // eslint-disable-next-line no-unused-vars
+    //   handler(val, oldVal){
+    //     this.dataset.dimensions=[]
+    //     for(let item of Object.keys(val[0]) ){
+    //       this.dataset.dimensions.push(item)
+    //     }
+    //     this.list.dataset.source=[]
+    //     for (let i=0;i<val.length;i++){
+    //       this.list.dataset.source.push(val[i])
+    //     }
+    //     console.log(this.list)
+    //     this.theChart.setOption(this.list)
+    //
+    //   },
+    //   deep:true //true 深度监听
+    // }
   },
   mounted() {
     /*ECharts图表*/

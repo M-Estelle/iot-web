@@ -44,7 +44,6 @@
           active-text="on"
           inactive-text="off">
       </el-switch>
-      <el-button @click="SearchCharts" type="primary" plain>生成图表</el-button>
     </div>
     <div class="search clearfix min" v-if="showSearchChart">
       <template v-for="item in list2">
@@ -200,7 +199,7 @@ export default {
 }
 .aborder{
   border: 1px solid #ebeef5;
-  padding: 20px 20px 0px;
+  padding: 20px 20px 0;
   box-sizing: border-box;
 }
 </style>

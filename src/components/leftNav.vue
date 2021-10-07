@@ -1,5 +1,5 @@
 <template>
-<div cl="left-nav">
+<div class="left-nav">
 
       <el-menu
           :default-active="activeIndex"
@@ -37,7 +37,7 @@ export default {
   data(){
     return {
       activeIndex: '/mulControl',
-      title: '模块控制'
+      // title: '模块控制'
     }
   },
   methods: {
@@ -50,8 +50,11 @@ export default {
 
   },
   mounted() {
+    if(window.location.pathname!=='/')
     this.activeIndex = window.location.pathname;
-    // console.log(this.$route.path)
+    else
+      this.activeIndex='/mulControl'
+    console.log(this.$route.path)
   }
 }
 </script>
