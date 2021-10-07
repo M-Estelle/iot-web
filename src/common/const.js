@@ -19,6 +19,6 @@ export const dataTitle=[
 
 export const searchTitle=[
     {title: '传感器名称',name:'ApiTag'},
-    {title: '值',name:'Value'},
     {title: '记录时间',name:'RecordTime'},
+    {title: '值',name:'Value'},
 ]

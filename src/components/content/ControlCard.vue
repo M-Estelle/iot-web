@@ -48,15 +48,13 @@ export default {
   data(){
     return{
       canMod:false, //当前状态是否可以更改，可以为false
-      nowState:true, //当前控件状态 开或关
-      setValus:null,
-      valus:''
+      nowState:true, //当前控件状态 开或关 参数为1
+      valus:'' //参数为4时的值
     }
   },
   computed:{
     isOpen(){
       if(this.nowState===true){
-
         return '开'
       }
       else{
@@ -65,13 +63,14 @@ export default {
     }
   },
   props:{
+    //传入卡片名称
     name:{
       type:String,
       default(){
         return '';
       }
     },
-
+    //传入卡片的详细信息
     Api:{
       type:Object,
       default(){
@@ -80,14 +79,16 @@ export default {
     }
   },
   methods:{
+    //设置当前是否可以改变控件的值，当自动控制开启时不可改变
     setCanMod(state){
       if(state)
       this.canMod=false
       else
         this.canMod=true
     },
+    //提交当前对控件状态的修改
     submitChange(){
-      // console.log(this.Api)
+      let that=this
       let params;
       if(this.Api.OperType==4){
         params=this.valus
@@ -97,6 +98,10 @@ export default {
       }
       sdkContest.Cmds('322860',this.Api.ApiTag,params).completed(function(res){
         console.log(res)
+        that.$message({
+          showClose: true,
+          message: res.Msg
+        });
       })
     }
   }

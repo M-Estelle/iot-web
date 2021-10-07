@@ -25,22 +25,16 @@
 
       <el-form-item label="起始时间">
         <el-col :span="11">
-          <el-date-picker type="date" placeholder="选择日期" v-model="form.date1" style="width: 100%;"></el-date-picker>
+          <el-date-picker type="datetime" value-format=" yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" placeholder="选择日期时间" v-model="form.StartDate" style="width: 100%;"></el-date-picker>
         </el-col>
-        <el-col class="line" :span="2">-</el-col>
-        <el-col :span="11">
-          <el-time-picker placeholder="选择时间" v-model="form.date2" style="width: 100%;"></el-time-picker>
-        </el-col>
+
       </el-form-item>
 
       <el-form-item label="结束时间">
         <el-col :span="11">
-          <el-date-picker type="date" placeholder="选择日期" v-model="form.date3" style="width: 100%;"></el-date-picker>
+          <el-date-picker type="datetime" value-format=" yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" placeholder="选择日期时间" v-model="form.EndDate" style="width: 100%;"></el-date-picker>
         </el-col>
-        <el-col class="line" :span="2">-</el-col>
-        <el-col :span="11">
-          <el-time-picker placeholder="选择时间" v-model="form.date4" style="width: 100%;"></el-time-picker>
-        </el-col>
+
       </el-form-item>
 
       <el-form-item label="排序方式">
@@ -72,10 +66,10 @@ export default {
         DeviceId:'322860',
         ApiTags: '',
         Method: '',
-        date1: '',
-        date2: '',
-        date3: '',
-        date4: '',
+        StartDate: '',
+        EndDate: '',
+        // date3: '',
+        // date4: '',
         Sort:'',
         PageSize:20,
         TimeAgo:''
@@ -83,11 +77,16 @@ export default {
     }
   },
   methods: {
+    dateChangebirthday(val) {
+      console.log(val);
+      this.form.birthdayName = val;
+    },
     onSubmit() {
       let that=this
       sdkContest.getSensorData(this.form).completed(function(res){
+        // console.log(res);
         let list=res.ResultObj.DataPoints
-        // console.log(list)
+        console.log(list)
         that.$emit('showSearchData',list);
       })
       console.log('submit!');

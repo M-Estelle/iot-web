@@ -13,7 +13,6 @@
           :label="item.title"
           :min-width="comWidth">
       </el-table-column>
-<!--       :span-method="objectSpanMethod"--->
     </el-table>
   </div>
 </template>

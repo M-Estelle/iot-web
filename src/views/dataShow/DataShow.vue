@@ -122,13 +122,13 @@ export default {
         for (let item of this.tableData) {
           this.list1.dataset.source.push(item)
         }
-        console.log(this.list1.dataset.source)
+        // console.log(this.list1.dataset.source)
         // this.list1.dataset.source.push(['9.29', 86.4, 65.2])
 
         for (let i = 1; i < this.title.length - 1; i++) {
           this.list1.series.push({type: 'line'})
         }
-        console.log(this.list1)
+        // console.log(this.list1)
         this.$refs.chart.changeCharts(this.list1)
 
     },
