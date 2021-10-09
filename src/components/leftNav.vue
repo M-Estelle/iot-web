@@ -11,7 +11,7 @@
             <span>模块控制</span>
         </el-menu-item>
 
-        <el-menu-item  index="/DataShow">
+        <el-menu-item  index="/DataShow" :disabled="canUse">
           <i class="el-icon-menu"></i>
           <span slot="title">数据显示</span>
         </el-menu-item>
@@ -37,7 +37,7 @@ export default {
   data(){
     return {
       activeIndex: '/mulControl',
-      // title: '模块控制'
+      // canUse:false
     }
   },
   methods: {
@@ -50,11 +50,19 @@ export default {
 
   },
   mounted() {
-    if(window.location.pathname!=='/')
-    this.activeIndex = window.location.pathname;
-    else
-      this.activeIndex='/mulControl'
+    // if(window.location.pathname!=='/')
+    // this.activeIndex = window.location.pathname;
+    // else
+    this.activeIndex='/mulControl'
+    this.$router.replace('/mulControl')
+
     console.log(this.$route.path)
+  },
+  computed:{
+    canUse(){
+
+      return !this.$store.state.info
+    }
   }
 }
 </script>

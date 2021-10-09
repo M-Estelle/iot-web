@@ -22,3 +22,9 @@ export const searchTitle=[
     {title: '记录时间',name:'RecordTime'},
     {title: '值',name:'Value'},
 ]
+
+export const user={
+    id:'18573242037',
+    password:'tozuki160308',
+    project:'322860'
+}

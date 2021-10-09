@@ -3,7 +3,7 @@
     <left-nav></left-nav>
     <div class="right">
       <keep-alive>
-        <router-view></router-view>
+        <router-view ></router-view>
       </keep-alive>
     </div>
   </div>
@@ -17,6 +17,8 @@ export default {
   name: 'App',
   components: {
     leftNav,
+  },
+  methods:{
   }
 }
 </script>

@@ -17,9 +17,9 @@
         active-text="on"
         inactive-text="off">
       </el-switch>
-      <el-button @click="newCharts" type="primary" plain>生成图表</el-button>
     </div>
     <div class="search clearfix min" v-if="showCurrentChart">
+      <el-button @click="newCharts" type="primary" plain>生成图表</el-button>
       <achat :chat-data="list1" ref="chart"></achat>
     </div>
 

@@ -1,8 +1,8 @@
 <template>
   <div class="more-form">
-    <el-form ref="form" :model="form" label-width="120px" label-position="left">
+    <el-form ref="form" :model="form" label-width="120px" label-position="left" :rules="rules">
 
-      <el-form-item label="设备ID(必填)">
+      <el-form-item label="设备ID(必填)" prop="DeviceId">
         <el-input v-model="form.DeviceId"></el-input>
       </el-form-item>
 
@@ -10,7 +10,7 @@
         <el-input v-model="form.ApiTags"></el-input>
       </el-form-item>
 
-      <el-form-item label="查询方式">
+      <el-form-item label="查询方式" prop="Method">
         <el-select v-model="form.Method" placeholder="请选择查询方式">
           <el-option label="XX分钟内" value="1"></el-option>
           <el-option label="XX小时内" value="2"></el-option>
@@ -19,32 +19,50 @@
           <el-option label="XX月内" value="5"></el-option>
           <el-option label="按startDate与endDate指定日期查询[默认]" value="6"></el-option>
         </el-select>
-        请输入时间跨度:
+      </el-form-item>
+
+      <el-form-item
+          label="时间跨度"
+          v-show="form.Method===1||form.Method===2||form.Method===3||form.Method==4||form.Method==5">
         <el-input v-model="form.TimeAgo"></el-input>
       </el-form-item>
 
-      <el-form-item label="起始时间">
+      <el-form-item label="起始时间" prop="StartDate"
+                    v-show="form.Method===''||form.Method===6">
         <el-col :span="11">
-          <el-date-picker type="datetime" value-format=" yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" placeholder="选择日期时间" v-model="form.StartDate" style="width: 100%;"></el-date-picker>
+          <el-date-picker
+              type="datetime"
+              value-format=" yyyy-MM-dd HH:mm"
+              format="yyyy-MM-dd HH:mm"
+              placeholder="选择日期时间"
+              v-model="form.StartDate"
+              style="width: 100%;"></el-date-picker>
         </el-col>
 
       </el-form-item>
 
-      <el-form-item label="结束时间">
+      <el-form-item label="结束时间" prop="EndDate"
+                    v-show="form.Method===''||form.Method===6">
         <el-col :span="11">
-          <el-date-picker type="datetime" value-format=" yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" placeholder="选择日期时间" v-model="form.EndDate" style="width: 100%;"></el-date-picker>
+          <el-date-picker
+              type="datetime"
+              value-format=" yyyy-MM-dd HH:mm"
+              format="yyyy-MM-dd HH:mm"
+              placeholder="选择日期时间"
+              v-model="form.EndDate"
+              style="width: 100%;"></el-date-picker>
         </el-col>
 
       </el-form-item>
 
-      <el-form-item label="排序方式">
+      <el-form-item label="排序方式(选填)">
         <el-select v-model="form.Sort" placeholder="请选择排序方式">
           <el-option label="倒序" value="DESC"></el-option>
           <el-option label="升序" value="ASC"></el-option>
         </el-select>
       </el-form-item>
 
-      <el-form-item label="数据条数">
+      <el-form-item label="数据条数(选填)">
         <el-input v-model="form.PageSize"></el-input>
       </el-form-item>
 
@@ -68,11 +86,28 @@ export default {
         Method: '',
         StartDate: '',
         EndDate: '',
-        // date3: '',
-        // date4: '',
         Sort:'',
         PageSize:20,
         TimeAgo:''
+      },
+      rules: {
+        // ApiTags: [
+        //   { required: true, message: '请输入活动名称', trigger: 'blur' },
+        //   { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+        // ],
+        DeviceId: [
+          { required: true, message: '请输入设备ID', trigger: 'blur' }
+        ],
+        Method: [
+          { required: true, message: '请选择查询方式', trigger: 'change' }
+        ],
+        StartDate: [
+          { type: 'date', required: true, message: '请选择起始时间', trigger: 'change' }
+        ],
+        EndDate: [
+          { type: 'date', required: true, message: '请选择结束时间', trigger: 'change' }
+        ],
+
       }
     }
   },

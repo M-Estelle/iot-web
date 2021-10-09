@@ -17,6 +17,7 @@ import
         <div class="line-title">{{Api.Name}}：</div>
         <el-input
             size="small"
+            type="number"
             v-model="valus"
             :disabled="canMod"
             placeholder="请输入内容"></el-input>
@@ -91,17 +92,28 @@ export default {
       let that=this
       let params;
       if(this.Api.OperType==4){
+        if(this.valus===''){
+          this.$message.error('错了哦，没有输入有效值');
+          return;
+        }
         params=this.valus
       }
       else{
         params=this.nowState
       }
       sdkContest.Cmds('322860',this.Api.ApiTag,params).completed(function(res){
-        console.log(res)
-        that.$message({
-          showClose: true,
-          message: res.Msg
-        });
+        if(res.Status) {
+          that.$message({
+            showClose: true,
+            message: res.Msg
+          });
+        }
+        else{
+          that.$message({
+            message: '设置成功',
+            type: 'success'
+          });
+        }
       })
     }
   }
