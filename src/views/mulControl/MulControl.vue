@@ -14,8 +14,14 @@
       <el-button @click="login">登录</el-button>
     </div>
 
-    <!--控件控制模块-->
-    <div class="search" v-show="haveSignIn">
+
+
+    <div class="box" v-if="haveSignIn">
+
+      <!--当前温度显示模块-->
+      <temperature></temperature>
+
+      <!--控件控制模块-->
       <el-button type="primary" plain @click="getSensors">生成传感器</el-button>
     </div>
     <div v-if="haveSignIn&&sensors.length!==0"  class="search">
@@ -36,7 +42,8 @@
 
 <script>
 import ControlCard from "@/components/content/ControlCard";
-import {sdkContest} from "@/common/const"
+import {sdkContest,user} from "@/common/const"
+import temperature from "@/components/content/temperature";
 
 export default {
   name: "MulControl",
@@ -51,6 +58,7 @@ export default {
   },
   components:{
     ControlCard,
+    temperature
   },
   methods:{
     /*
@@ -83,7 +91,7 @@ export default {
      */
     getSensors(){
       let that=this
-      sdkContest.getProjectSensors(291210).completed(function (res){
+      sdkContest.getProjectSensors(user.projectId).completed(function (res){
         // console.log(res.ResultObj)
         that.sensors=res.ResultObj.filter(item => item.Groups ===2 );
         // console.log(that.sensors)
@@ -131,4 +139,9 @@ export default {
   max-width: 50%;
   margin-top: 20px;
 }
+.box{
+  margin: 20px auto;
+  width: 90%;
+}
+
 </style>

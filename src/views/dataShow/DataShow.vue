@@ -1,6 +1,8 @@
 <template>
   <div class="data-view">
 
+    <temperature class="box"></temperature>
+
     <!--    实时数据展示      -->
     <div class="search label">实时数据<el-button type="primary" class="floatr" @click="getCurrentData">获取数据</el-button></div>
 
@@ -61,9 +63,9 @@
 import achat from "@/components/achat";
 import NewDataList from "@/views/dataShow/childComonts/NewDataList";
 import MoreForm from "@/components/content/MoreForm";
-// import LineForm from "../../components/content/LineForm";
+import temperature from "@/components/content/temperature";
 
-import {dataTitle,sdkContest,searchTitle} from "@/common/const";
+import {dataTitle,sdkContest,searchTitle,user} from "@/common/const";
 
 
 export default {
@@ -71,7 +73,8 @@ export default {
   components:{
     achat,
     NewDataList,
-    MoreForm
+    MoreForm,
+    temperature
   },
   data() {
     return {
@@ -134,7 +137,7 @@ export default {
     getCurrentData(){
       let that=this
 
-      sdkContest.getDevicesDatas('322860 ').completed(function(res){
+      sdkContest.getDevicesDatas(user.devIds).completed(function(res){
         // console.log(res.ResultObj[0].Datas)
         let beautify={}
         let myDate = new Date();
@@ -197,5 +200,9 @@ export default {
   border: 1px solid #ebeef5;
   padding: 20px 20px 0;
   box-sizing: border-box;
+}
+.box{
+  margin: 20px auto;
+  width: 90%;
 }
 </style>
