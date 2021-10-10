@@ -74,7 +74,20 @@ export default {
       for (let i=0;i<val.length;i++){
         this.list.dataset.source.push(val[i])
       }
-      this.list.series=[{type: 'line'}]
+      this.list.series=[{
+        type:'line',
+        // markPoint: {
+        //   data: [
+        //     { type: 'max', name: 'Max' },
+        //     { type: 'min', name: 'Min' }
+        //   ]
+        // }, //显示最高点与最低点
+        markLine : {
+          data : [
+            {type : 'average', name: '平均值'}
+          ]
+        }//显示平均值线
+      }]
 
       console.log(this.list)
       this.theChart.setOption(this.list)
