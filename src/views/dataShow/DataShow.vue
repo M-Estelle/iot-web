@@ -31,14 +31,24 @@
       <more-form @showSearchData="searchData"></more-form>
     </div>
 
-
+    <!--   历史数据搜索数据表格    -->
     <new-data-list
         :dataTitle="searchTitle"
         class="search"
         :new-data="tableSearch"
         :spanArr="spanArr"/>
 
-    <!-- 搜索数据图表  <el-button @click="newCharts" type="primary" plain>生成图表</el-button> -->
+    <!--   历史数据搜索数据导出功能    -->
+    <download-excel
+        class = "export-excel-wrapper search"
+        :data = "tableSearch"
+        :fields = "ExelTitle"
+        name = "数据搜索结果.xls">
+      <!-- 上面可以自定义自己的样式，还可以引用其他组件button -->
+      <el-button type="primary" size="small">导出EXCEL</el-button>
+    </download-excel>
+
+    <!-- 搜索数据图表  -->
     <div class="search label">是否展示搜索数据图表
       <el-switch
           :change="newCharts"
@@ -65,7 +75,7 @@ import NewDataList from "@/views/dataShow/childComonts/NewDataList";
 import MoreForm from "@/components/content/MoreForm";
 import temperature from "@/components/content/temperature";
 
-import {dataTitle,sdkContest,searchTitle,user} from "@/common/const";
+import {dataTitle,sdkContest,searchTitle,user,ExelTitle} from "@/common/const";
 
 
 export default {
@@ -81,8 +91,8 @@ export default {
       //图像数据1
       title:[],//实时数据图表的表头
       tableData: [],//实时数据图表的数据
-      searchTitle:[],//搜索数据图表的表头
-      tableSearch:[],//搜索数据图表的数据
+      searchTitle:[],//搜索数据表格的表头
+      tableSearch:[],//搜索数据表格的数据
       spanArr:[],//搜索数据表格的合并行的数组
       showCurrentChart:false,//是否展示实时数据图表
       showSearchChart:false,//是否展示搜索数据的图表
@@ -100,7 +110,16 @@ export default {
         // 声明多个 bar 系列，默认情况下，每个系列会自动对应到 dataset 的每一列。{type: 'bar'}, {type: 'bar'},{type: 'bar'}
         series: []
       },
-
+      //以下为导出功能需要的
+      ExelTitle:{},
+      json_meta: [
+        [
+          {
+            " key ": " charset ",
+            " value ": " utf- 8 "
+          }
+        ]
+      ]
     }
   },
   methods:{
@@ -177,6 +196,7 @@ export default {
     //从const文件夹读取表头信息
     this.title=dataTitle
     this.searchTitle=searchTitle
+    this.ExelTitle=ExelTitle
   },
 }
 </script>

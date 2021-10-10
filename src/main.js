@@ -13,6 +13,8 @@ window.$ = $;
 
 Vue.prototype.$echarts = echarts;
 Vue.use(ElementUI);
+import JsonExcel from 'vue-json-excel'
+Vue.component('downloadExcel', JsonExcel)
 
 Vue.config.productionTip = false
 new Vue({

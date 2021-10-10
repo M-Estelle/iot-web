@@ -1,6 +1,14 @@
 <template>
   <div class="more-form">
-    <el-form ref="form" :model="form" label-width="120px" label-position="left" :rules="rules">
+    <el-form ref="form"
+             :model="form"
+             label-width="120px"
+             label-position="left"
+             v-loading="loading"
+             element-loading-text="搜索中"
+             element-loading-spinner="el-icon-loading"
+             element-loading-background="rgba(0, 0, 0, 0.8)"
+             :rules="rules">
 
       <el-form-item label="设备ID(必填)" prop="DeviceId">
         <el-input v-model="form.DeviceId"></el-input>
@@ -23,12 +31,12 @@
 
       <el-form-item
           label="时间跨度"
-          v-show="form.Method===1||form.Method===2||form.Method===3||form.Method==4||form.Method==5">
+          v-show="form.Method==='1'||form.Method==='2'||form.Method==='3'||form.Method=='4'||form.Method=='5'">
         <el-input v-model="form.TimeAgo"></el-input>
       </el-form-item>
 
       <el-form-item label="起始时间" prop="StartDate"
-                    v-show="form.Method===''||form.Method===6">
+                    v-show="form.Method===''||form.Method==='6'">
         <el-col :span="11">
           <el-date-picker
               type="datetime"
@@ -42,7 +50,7 @@
       </el-form-item>
 
       <el-form-item label="结束时间" prop="EndDate"
-                    v-show="form.Method===''||form.Method===6">
+                    v-show="form.Method===''||form.Method==='6'">
         <el-col :span="11">
           <el-date-picker
               type="datetime"
@@ -80,6 +88,7 @@ export default {
   name: "MoreForm",
   data() {
     return {
+      loading:false,
       form: {
         DeviceId:'322860',
         ApiTags: '',
@@ -91,10 +100,6 @@ export default {
         TimeAgo:''
       },
       rules: {
-        // ApiTags: [
-        //   { required: true, message: '请输入活动名称', trigger: 'blur' },
-        //   { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-        // ],
         DeviceId: [
           { required: true, message: '请输入设备ID', trigger: 'blur' }
         ],
@@ -118,7 +123,20 @@ export default {
     },
     onSubmit() {
       let that=this
+      this.loading=true
       sdkContest.getSensorData(this.form).completed(function(res){
+        that.loading=false
+        if(res.Status){
+          that.$message.error('查询失败');
+          return
+        }
+        if(res.ResultObj.Count===0){
+          that.$message({
+            message: '当前查询范围内，没有数据',
+            type: 'warning'
+          });
+          return;
+        }
         // console.log(res);
         let list=res.ResultObj.DataPoints
         console.log(list)

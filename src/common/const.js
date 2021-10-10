@@ -23,6 +23,12 @@ export const searchTitle=[
     {title: '值',name:'Value'},
 ]
 
+export const ExelTitle={
+    '传感器名称':'ApiTag',
+    '记录时间':'RecordTime',
+    '值':'Value',
+}
+
 export const user={
     id:'18573242037',
     password:'tozuki160308',
