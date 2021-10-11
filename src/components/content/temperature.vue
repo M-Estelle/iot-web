@@ -20,7 +20,8 @@ export default {
       state:0,
       temp_up:null,
       temp_low:null,
-      temp_cur:''
+      temp_cur:'',
+      timer:null
     }
   },
   computed:{
@@ -44,7 +45,6 @@ export default {
   },
   methods:{
     getTemperature(){
-      console.log('1111111')
       let that=this
       sdkContest.getDeviceInfo(user.devIds).completed(function(res){
         for(let item of res.ResultObj.Sensors){
@@ -62,9 +62,9 @@ export default {
     }
   },
   mounted() {
-    // this.getTemperature()
+    this.getTemperature()
     let that=this
-    setInterval(that.getTemperature(), 300);
+    that.timer=setInterval(that.getTemperature, 3000);
   }
 }
 </script>
