@@ -22,7 +22,7 @@ export default {
   name: "temperature",
   components:{
     blower,
-    alarm
+    alarm,
   },
   data(){
     return{
@@ -31,6 +31,7 @@ export default {
       temp_low:null,
       temp_cur:'',
       timer:null,
+      isActive:false
     }
   },
   computed:{
@@ -69,6 +70,9 @@ export default {
         }
       })
     },
+    modify(){
+      this.isActive=!this.isActive
+    }
   },
   mounted() {
     this.getTemperature()
