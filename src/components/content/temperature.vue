@@ -7,21 +7,30 @@
       <el-tag v-if="returnState===10" type="danger">低于下限温度</el-tag>
       <el-tag v-if="returnState===20" type="success">正常</el-tag>
     </div>
+    <blower class="senser" :isActive="returnState===30"></blower>
+    <alarm class="senser" :isActive="returnState===10"></alarm>
+<!--    <el-button @click="modify">修改</el-button>-->
   </div>
 </template>
 
 <script>
 import {user,sdkContest} from "@/common/const";
+import blower from "@/components/content/blower";
+import alarm from "@/components/content/alarm";
 
 export default {
   name: "temperature",
+  components:{
+    blower,
+    alarm
+  },
   data(){
     return{
       state:0,
       temp_up:null,
       temp_low:null,
       temp_cur:'',
-      timer:null
+      timer:null,
     }
   },
   computed:{
@@ -59,7 +68,7 @@ export default {
           }
         }
       })
-    }
+    },
   },
   mounted() {
     this.getTemperature()
@@ -76,5 +85,9 @@ export default {
   line-height: 25px;
   font-size: 22px;
   font-weight: 600;
+}
+.senser{
+  display: inline-block;
+  width: 50%
 }
 </style>
