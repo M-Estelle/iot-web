@@ -8,7 +8,7 @@
 import $ from 'jquery'
 (function () {
 
-    var API_HOST = "http://172.20.10.9:8008";
+    var API_HOST = "http://192.168.2.145:8008";
     var AccessToken = ''
     function jsonp(url, fn, token, data, type,contentType)
     {
@@ -71,99 +71,6 @@ import $ from 'jquery'
                 }
             }
         },
-        /*
-        * 获取某个项目的信息
-        * @param tag 项目标识
-        */
-        getProjectInfo: function (projectId) {
-            var completedCallback;
-            jsonp(API_HOST + "/Projects/" + projectId, function (res) {
-                completedCallback && completedCallback(res);
-            }, AccessToken);
-            return {
-                completed: function (fn) {
-                    completedCallback = fn;
-                }
-            }
-        },
-        /*
-        * 模糊查询项目
-        * @param query 查询条件
-        */
-        getProjects: function (query) {
-            var completedCallback;
-            var queryStr = "";
-            if (query) {
-                queryStr += (query.Keyword ? ("Keyword=" + query.Keyword + "&") : "");
-                queryStr += (query.ProjectTag ? ("ProjectTag=" + query.ProjectTag + "&") : "");
-                queryStr += (query.NetWorkKind ? ("NetWorkKind=" + query.NetWorkKind + "&") : "");
-
-                queryStr += (query.StartDate ? ("StartDate=" + encodeURIComponent(query.StartDate) + "&") : "");
-                queryStr += (query.EndDate ? ("EndDate=" + encodeURIComponent(query.EndDate) + "&") : "");
-                queryStr += (query.PageSize ? ("PageSize=" + query.PageSize + "&") : "PageSize=20&");
-                queryStr += (query.PageIndex ? ("PageIndex=" + query.PageIndex + "&") : "PageIndex=1&");
-            }
-
-            jsonp(API_HOST + "/Projects?" + queryStr, function (res) {
-                completedCallback && completedCallback(res);
-            }, AccessToken);
-            return {
-                completed: function (fn) {
-                    completedCallback = fn;
-                }
-            }
-        },
-        /*ip.dst == 172.20.10.9
-        * 查询项目所有设备的传感器
-        * @param projectId 项目ID
-        */
-        getProjectSensors: function (projectId) {
-            var completedCallback;
-            if (!projectId) throw "projectId 不能为空";
-            var url = API_HOST + "/Projects/" + projectId + "/Sensors";
-            jsonp(url, function (res) {
-                completedCallback && completedCallback(res);
-            }, AccessToken);
-            return {
-                completed: function (fn) {
-                    completedCallback = fn;
-                }
-            }
-        },
-        /*
-        * 批量查询设备最新数据
-        * @param devIds 设备ID用逗号隔开, 限制100个设备
-        */
-        getDevicesDatas: function (devIds) {
-            var completedCallback;
-            if (!devIds) devIds = "";
-            var url = API_HOST + "/Devices/Datas?devIds=" + devIds;
-            jsonp(url, function (res) {
-                completedCallback && completedCallback(res);
-            }, AccessToken);
-            return {
-                completed: function (fn) {
-                    completedCallback = fn;
-                }
-            }
-        },
-        /*
-        * 批量查询设备的在线状态
-        * @param devIds 设备ID用逗号隔开, 限制100个设备
-        */
-        getDevicesStatus: function (devIds) {
-            var completedCallback;
-            if (!devIds) devIds = "";
-            var url = API_HOST + "/Devices/Status?devIds=" + devIds;
-            jsonp(url, function (res) {
-                completedCallback && completedCallback(res);
-            }, AccessToken);
-            return {
-                completed: function (fn) {
-                    completedCallback = fn;
-                }
-            }
-        },
 
         /*
         * 查询单个设备
@@ -182,59 +89,6 @@ import $ from 'jquery'
                 }
             }
         },
-        /*
-        * 模糊查询设备
-        * @param query 查询条件
-        */
-        getDevices: function (query) {
-            var completedCallback;
-            var queryStr = "";
-            if (query) {
-                queryStr += (query.Keyword ? ("Keyword=" + query.Keyword + "&") : "");
-                queryStr += (query.DeviceIds ? ("DeviceIds=" + query.DeviceIds + "&") : "");
-                queryStr += (query.Tag ? ("Tag=" + query.Tag + "&") : "");
-                queryStr += (query.IsOnline ? ("IsOnline=" + query.IsOnline + "&") : "");
-                queryStr += (query.IsShare ? ("IsShare=" + query.IsShare + "&") : "");
-                queryStr += (query.ProjectKeyWord ? ("ProjectKeyWord=" + query.ProjectKeyWord + "&") : "");
-
-                queryStr += (query.StartDate ? ("StartDate=" + encodeURIComponent(query.StartDate )+ "&") : "");
-                queryStr += (query.EndDate ? ("EndDate=" + encodeURIComponent(query.EndDate) + "&") : "");
-                queryStr += (query.PageSize ? ("PageSize=" + query.PageSize + "&") : "PageSize=20&");
-                queryStr += (query.PageIndex ? ("PageIndex=" + query.PageIndex + "&") : "PageIndex=1&");
-            }
-
-
-            var url = API_HOST + "/Devices?" + queryStr;
-            jsonp(url, function (res) {
-                completedCallback && completedCallback(res);
-            }, AccessToken);
-            return {
-                completed: function (fn) {
-                    completedCallback = fn;
-                }
-            }
-        },
-
-        /*
-        * 查询单个传感器
-        * @param deviceId  设备ID
-        * @param apiTag  传感标识名
-        */
-        getSensorInfo: function (deviceId, apiTag) {
-            var completedCallback;
-            if (!deviceId) throw "deviceId 不能为空";
-            if (!apiTag) throw "apiTag 不能为空";
-            var url = API_HOST + "/devices/" + deviceId + "/Sensors/" + apiTag;
-            jsonp(url, function (res) {
-                completedCallback && completedCallback(res);
-            }, AccessToken);
-            return {
-                completed: function (fn) {
-                    completedCallback = fn;
-                }
-            }
-        },
-
         /*
         * 模糊查询传感器
         * @param deviceId  设备id
@@ -275,34 +129,6 @@ import $ from 'jquery'
             queryStr += (query.PageSize ? ("PageSize=" + query.PageSize + "&") : "PageSize=20&");
             queryStr += (query.PageIndex ? ("PageIndex=" + query.PageIndex + "&") : "PageIndex=1&");
             var url = API_HOST + "/devices/" + query.DeviceId + "/Datas?" + queryStr;
-            jsonp(url, function (res) {
-                completedCallback && completedCallback(res);
-            }, AccessToken);
-            return {
-                completed: function (fn) {
-                    completedCallback = fn;
-                }
-            }
-        },
-
-
-        /*
-        * 聚合查询传感数据
-        * @param query 查询条件
-        */
-        groupingSensorData: function (query) {
-            var completedCallback;
-            if (!query) throw "query 不能为空";
-            if (!query.DeviceId) throw "DeviceId 不能为空";
-            var queryStr = "";
-            queryStr += (query.DeviceId ? ("DeviceId=" + query.DeviceId + "&") : "");
-            queryStr += (query.ApiTags ? ("ApiTags=" + query.ApiTags + "&") : "");
-            queryStr += (query.GroupBy ? ("GroupBy=" + query.GroupBy + "&") : "");
-            queryStr += (query.Func ? ("Func=" + query.Func + "&") : "");
-
-            queryStr += (query.StartDate ? ("StartDate=" + encodeURIComponent(query.StartDate) + "&") : "");
-            queryStr += (query.EndDate ? ("EndDate=" + encodeURIComponent(query.EndDate) + "&") : "");
-            var url = API_HOST + "/devices/" + query.DeviceId + "/Datas/Grouping?" + queryStr;
             jsonp(url, function (res) {
                 completedCallback && completedCallback(res);
             }, AccessToken);
