@@ -28,7 +28,7 @@
     <!--   历史数据搜索模块    -->
     <div class="search label">模糊数据搜索</div>
     <div class="search aborder">
-      <more-form @showSearchData="searchData"></more-form>
+      <more-form @showSearchData="searchData" ></more-form>
     </div>
 
     <!--   历史数据搜索数据表格    -->
@@ -156,12 +156,12 @@ export default {
     getCurrentData(){
       let that=this
 
-      sdkContest.getDevicesDatas(user.devIds).completed(function(res){
+      sdkContest.getSensors(user.devIds,"").completed(function(res){
         // console.log(res.ResultObj[0].Datas)
         let beautify={}
         let myDate = new Date();
         beautify['date']=myDate.toLocaleTimeString();
-        for (let item of res.ResultObj[0].Datas){
+        for (let item of res.ResultObj){
           beautify[item.ApiTag]=item.Value
         }
         that.tableData.push(beautify)
@@ -173,7 +173,11 @@ export default {
     1.生成搜索数据表格的合并行的数组
     2.将数据渲染到图表视图上
      */
+    clearData(){
+      this.tableSearch = []
+    },
     searchData(list){
+      this.clearData()
       console.log(list)
       // this.list2=list
       let arr=[]

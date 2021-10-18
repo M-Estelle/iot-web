@@ -91,9 +91,9 @@ export default {
      */
     getSensors(){
       let that=this
-      sdkContest.getProjectSensors(user.projectId).completed(function (res){
+      sdkContest.getDeviceInfo(user.devIds).completed(function (res){
         // console.log(res.ResultObj)
-        that.sensors=res.ResultObj.filter(item => item.Groups ===2 );
+        that.sensors=res.ResultObj.Sensors;
         // console.log(that.sensors)
       })
     }

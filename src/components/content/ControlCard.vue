@@ -13,12 +13,12 @@ import
 <!--      </div>-->
 
       <!--如果参数类型为4的话，显示输入框型更改方式-->
-      <div v-if="Api.OperType===4"  class="text item">
+      <div   class="text item">
         <div class="line-title">{{Api.Name}}：</div>
         <el-input
             size="small"
             type="number"
-            v-model="valus"
+            v-model="value"
             :disabled="canMod"
             placeholder="请输入内容"></el-input>
       </div>
@@ -50,7 +50,7 @@ export default {
     return{
       canMod:false, //当前状态是否可以更改，可以为false
       nowState:true, //当前控件状态 开或关 参数为1
-      valus:'' //参数为4时的值
+      value:'' //参数为4时的值
     }
   },
   computed:{
@@ -88,19 +88,14 @@ export default {
         this.canMod=true
     },
     //提交当前对控件状态的修改
-    submitChange(){
-      let that=this
+    submitChange() {
+      let that = this
       let params;
-      if(this.Api.OperType==4){
-        if(this.valus===''){
-          this.$message.error('错了哦，没有输入有效值');
-          return;
-        }
-        params=this.valus
+      if (this.value === '') {
+        this.$message.error('错了哦，没有输入有效值')
+        return
       }
-      else{
-        params=this.nowState
-      }
+      params = this.value
       sdkContest.Cmds('322860',this.Api.ApiTag,params).completed(function(res){
         if(res.Status) {
           that.$message({

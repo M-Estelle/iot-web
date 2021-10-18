@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import $ from 'jquery'
-import "@/network/nlecloud-sdk"
-
+import "@/network/mycloud-sdk"
+// import "@/network/nlecloud-sdk"
 // eslint-disable-next-line no-undef
 export const sdkContest = new NLECloudAPI();
 
