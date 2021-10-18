@@ -89,7 +89,7 @@ export default {
         }//显示平均值线
       }]
 
-      console.log(this.list)
+      // console.log(this.list)
       this.theChart.setOption(this.list)
     },
     /*

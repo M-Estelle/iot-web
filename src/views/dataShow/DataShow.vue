@@ -96,7 +96,7 @@ export default {
       spanArr:[],//搜索数据表格的合并行的数组
       showCurrentChart:false,//是否展示实时数据图表
       showSearchChart:false,//是否展示搜索数据的图表
-      list2:[],//搜索数据表格的内容
+      list2:[],//搜索数据图表的内容
       list1: {
         legend: {},
         tooltip: {},
@@ -179,7 +179,9 @@ export default {
     searchData(list){
       this.clearData()
       console.log(list)
-      // this.list2=list
+      // console.log(this.tableSearch)
+      this.tableSearch=[]
+      // console.log(this.tableSearch)
       let arr=[]
       for(let i=0;i<list.length;i++){
         this.list2.push(list[i])

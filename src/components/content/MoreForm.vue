@@ -138,7 +138,8 @@ export default {
           return;
         }
         // console.log(res);
-        let list=res.ResultObj.DataPoints
+        let list=[]
+        list=res.ResultObj.DataPoints
         console.log(list)
         that.$emit('showSearchData',list);
       })
