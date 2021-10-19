@@ -4,7 +4,9 @@
     <temperature class="box"></temperature>
 
     <!--    实时数据展示      -->
-    <div class="search label">实时数据<el-button type="primary" class="floatr" @click="getCurrentData">获取数据</el-button></div>
+    <div class="search label">实时数据
+      <el-button type="primary" class="floatr" @click="getCurrentData">获取实时数据</el-button>
+    </div>
 
     <new-data-list
         :dataTitle="title"
@@ -59,7 +61,6 @@
     </div>
     <div class="search clearfix min" v-if="showSearchChart">
       <template v-for="(item,index) in list2">
-<!--        hello {{item.ApiTag}} {{item.PointDTO}}-->
         <achat :title="item.ApiTag" :key="index" :ChatData="item.PointDTO"></achat>
       </template>
     </div>
@@ -154,8 +155,10 @@ export default {
     3.往表格中插入数据
      */
     getCurrentData(){
+      if(this.showCurrentChart){
+        this.showCurrentChart=false
+      }
       let that=this
-
       sdkContest.getSensors(user.devIds,"").completed(function(res){
         // console.log(res.ResultObj[0].Datas)
         let beautify={}
