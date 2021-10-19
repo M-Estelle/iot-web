@@ -35,3 +35,22 @@ export const user={
     devIds:'322860',
     // projectId:'291210'
 }
+
+export const Sensors=[
+    {
+        ApiTag: "temp_up_ctrl",
+        Name: "上限温度"
+    },
+    {
+        ApiTag: "temp_low_ctrl",
+        Name: "下限温度"
+    },
+    {
+        ApiTag: "air_switch_ctrl",
+        Name: "空调开关"
+    },
+    {
+        ApiTag: "heater_ctrl",
+        Name: "加热器开关"
+    },
+]

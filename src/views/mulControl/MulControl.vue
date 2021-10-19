@@ -28,11 +28,8 @@
       <control-card
           v-for="(item,index) in sensors"
           ref="card" :key="index"
-          :name="'item.ApiTag'"
           :Api="item"
-          class="control-card">
-        <div slot="title">{{item.Name}}</div>
-      </control-card>
+          class="control-card"></control-card>
     </div>
 
 
@@ -90,11 +87,12 @@ export default {
     获取所有传感器
      */
     getSensors(){
+      // this.sensors=Sensors
       let that=this
       sdkContest.getDeviceInfo(user.devIds).completed(function (res){
         // console.log(res.ResultObj)
         that.sensors=res.ResultObj.Sensors;
-        // console.log(that.sensors)
+        console.log(that.sensors)
       })
     }
   },

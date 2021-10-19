@@ -1,10 +1,9 @@
-import 
 <template>
   <div class="control-cartd">
     <el-card class="box-card">
       <div slot="header" class="clearfix title">
       <!--插槽 写入控件名称-->
-        <span> <slot name="title"></slot></span>
+        <span> {{Api.Name}}</span>
       </div>
 
       <!--控件内容-->
@@ -16,7 +15,7 @@ import
 
         <!--如果参数类型为4的话，显示输入框型更改方式-->
         <div   class="text item">
-          <div class="line-title">{{Api.Name}}：</div>
+          <div class="line-title">{{Api.ApiTag}}：</div>
           <el-input
               size="small"
               type="number"
@@ -66,13 +65,6 @@ export default {
     }
   },
   props:{
-    //传入卡片名称
-    name:{
-      type:String,
-      default(){
-        return '';
-      }
-    },
     //传入卡片的详细信息
     Api:{
       type:Object,
@@ -139,14 +131,6 @@ export default {
   text-align: center;
   height: auto;
   word-wrap:break-word;
-}
-.clearfix:before,
-.clearfix:after {
-  display: table;
-  content: "";
-}
-.clearfix:after {
-  clear: both
 }
 
 .box-card {

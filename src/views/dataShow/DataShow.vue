@@ -175,18 +175,16 @@ export default {
      */
     clearData(){
       this.tableSearch = []
+      this.list2=[]
     },
     searchData(list){
       this.clearData()
       console.log(list)
       if(this.showSearchChart){
         this.showSearchChart=false
-      }
-      // console.log(this.tableSearch)
-      this.tableSearch=[]
-      this.list2=[]
-      // console.log(this.tableSearch)
-      let arr=[]
+      }//如果当前图表打开则关闭
+
+      let arr=[]  //记录表格列合并数组
       for(let i=0;i<list.length;i++){
         this.list2.push(list[i])
          arr.push(list[i].PointDTO.length)
