@@ -7,34 +7,36 @@ import
         <span> <slot name="title"></slot></span>
       </div>
 
-      <!-- 显示控件当前状态     -->
-<!--      <div  class="text item">-->
-<!--        <span class="line-title">状态：</span><span>{{isOpen}}</span>-->
-<!--      </div>-->
+      <!--控件内容-->
+      <div class="content">
+        <!-- 显示控件当前状态     -->
+  <!--      <div  class="text item">-->
+  <!--        <span class="line-title">状态：</span><span>{{isOpen}}</span>-->
+  <!--      </div>-->
 
-      <!--如果参数类型为4的话，显示输入框型更改方式-->
-      <div   class="text item">
-        <div class="line-title">{{Api.Name}}：</div>
-        <el-input
-            size="small"
-            type="number"
-            v-model="value"
-            :disabled="canMod"
-            placeholder="请输入内容"></el-input>
+        <!--如果参数类型为4的话，显示输入框型更改方式-->
+        <div   class="text item">
+          <div class="line-title">{{Api.Name}}：</div>
+          <el-input
+              size="small"
+              type="number"
+              v-model="value"
+              :disabled="canMod"
+              placeholder="请输入内容"></el-input>
+        </div>
+
+        <!--如果参数类型为1的话，显示开关型更改方式-->
+  <!--      <div v-if="Api.OperType===1"  class="text item">-->
+  <!--        <span class="line-title">切换状态：</span>-->
+  <!--        <el-switch-->
+  <!--            class="paddingtop"-->
+  <!--            v-model="nowState"-->
+  <!--            :disabled="canMod"-->
+  <!--            active-text="on"-->
+  <!--            inactive-text="off">-->
+  <!--      </el-switch>-->
+  <!--      </div>-->
       </div>
-
-      <!--如果参数类型为1的话，显示开关型更改方式-->
-      <div v-if="Api.OperType===1"  class="text item">
-        <span class="line-title">切换状态：</span>
-        <el-switch
-            class="paddingtop"
-            v-model="nowState"
-            :disabled="canMod"
-            active-text="on"
-            inactive-text="off">
-      </el-switch>
-      </div>
-
       <div class="item">
         <el-button type="primary" :disabled="canMod" @click="submitChange" plain>提交设置</el-button>
       </div>
@@ -43,7 +45,7 @@ import
 </template>
 
 <script>
-import {sdkContest} from "@/common/const"
+import {sdkContest,user} from "@/common/const"
 export default {
   name: "ControlCard",
   data(){
@@ -96,7 +98,7 @@ export default {
         return
       }
       params = this.value
-      sdkContest.Cmds('322860',this.Api.ApiTag,params).completed(function(res){
+      sdkContest.Cmds(user.devIds,this.Api.ApiTag,params).completed(function(res){
         if(res.Status) {
           that.$message({
             showClose: true,
@@ -133,7 +135,10 @@ export default {
 }
 
 .line-title{
-  width: 90px;
+  width: 150px;
+  text-align: center;
+  height: auto;
+  word-wrap:break-word;
 }
 .clearfix:before,
 .clearfix:after {
@@ -149,5 +154,9 @@ export default {
 }
 .paddingtop {
   padding-top: 5px;
+}
+.content{
+  display: flex;
+  height: auto;
 }
 </style>

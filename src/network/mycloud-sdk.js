@@ -8,7 +8,7 @@
 import $ from 'jquery'
 (function () {
 
-    var API_HOST = "http://192.168.2.145:8008";
+    var API_HOST = "http://192.168.8.103:8008";
     var AccessToken = ''
     function jsonp(url, fn, token, data, type,contentType)
     {

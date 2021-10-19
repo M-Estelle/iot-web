@@ -36,7 +36,7 @@ export default {
   },
   computed:{
     returnState(){
-      if (this.temp_cur===null||this.temp_up===null||this.temp_low===null){
+      if (this.temp_cur===null||this.temp_cur===''||this.temp_up===null||this.temp_up===''||this.temp_low===null||this.temp_low===''){
         return 0
       }
       else if(this.temp_low>this.temp_up){
@@ -58,13 +58,13 @@ export default {
       let that=this
       sdkContest.getDeviceInfo(user.devIds).completed(function(res){
         for(let item of res.ResultObj.Sensors){
-          if(item.ApiTag=="temp_up" && that.temp_up !== item.Value){
+          if(item.ApiTag==="temp_up" && that.temp_up !== item.Value){
             that.temp_up = item.Value
           }
-          if(item.ApiTag=="temp_low" && that.temp_low !== item.Value){
+          if(item.ApiTag==="temp_low" && that.temp_low !== item.Value){
             that.temp_low = item.Value
           }
-          if(item.ApiTag=="temp_cur" && that.temp_cur !== item.Value){
+          if(item.ApiTag==="temp_cur" && that.temp_cur !== item.Value){
             that.temp_cur = item.Value
           }
         }

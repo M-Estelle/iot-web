@@ -58,9 +58,9 @@
       </el-switch>
     </div>
     <div class="search clearfix min" v-if="showSearchChart">
-      <template v-for="item in list2">
+      <template v-for="(item,index) in list2">
 <!--        hello {{item.ApiTag}} {{item.PointDTO}}-->
-        <achat :title="item.ApiTag" :key="item.ApiTag" :ChatData="item.PointDTO"></achat>
+        <achat :title="item.ApiTag" :key="index" :ChatData="item.PointDTO"></achat>
       </template>
     </div>
 
@@ -179,8 +179,12 @@ export default {
     searchData(list){
       this.clearData()
       console.log(list)
+      if(this.showSearchChart){
+        this.showSearchChart=false
+      }
       // console.log(this.tableSearch)
       this.tableSearch=[]
+      this.list2=[]
       // console.log(this.tableSearch)
       let arr=[]
       for(let i=0;i<list.length;i++){
