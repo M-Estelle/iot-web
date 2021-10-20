@@ -13,7 +13,7 @@ export const dataTitle=[
     {title: '温度警报',name:'temp_alarm'},
     {title: '空调开关',name:'air_switch'},
     {title: '上限温度控制',name:'temp_up_ctrl'},
-    {title: '下限温度控制',name:'temp_low_ctrl'},
+    // {title: '烟雾浓度',name:'smoke'},
     {title: '空调开关',name:'air_switch_ctrl'},
 ]
 

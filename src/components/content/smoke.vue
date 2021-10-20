@@ -1,17 +1,16 @@
 <template>
   <div class="senser">
-    <div class="lamp-out">
-      <div class="lamp-bg" :class="[isActive?'animation-twinkle':'']"></div>
-      <img v-if="!isActive" class="sensor-iner" src="@/assets/images/lamp.png">
-      <img v-else class="sensor-iner" src="@/assets/images/lamp_active.png">
+    <div class="smoke-out">
+      <div class="smoke-bg" :class="[isActive?'animation-twinkle':'']"></div>
+      <img class="sensor-iner" src="@/assets/images/smoke.png">
     </div>
-    <div class="text"><slot>灯泡</slot></div>
+    <div class="text"><slot>烟雾报警器</slot></div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "lamp",
+  name: "smoke",
   props:{
     isActive: {
       type: Boolean,
@@ -35,18 +34,18 @@ export default {
   line-height: 50px;
   font-size: 20px;
 }
-.lamp-out{
+.smoke-out{
   width: 150px;
   height: 150px;
   position: relative;
 }
 .sensor-iner{
-  width: 100px;
-  height: 100px;
-  padding-top: 30px ;
-  padding-left: 24px;
+  width: 135px;
+  height: 130px;
+  padding-top: 11px;
+  padding-left: 6px;
 }
-.lamp-bg {
+.smoke-bg {
   position: absolute;
   top: 0;
   left: 0;
@@ -54,7 +53,7 @@ export default {
   right: 0;
 }
 .animation-twinkle{
-  background: url("~@/assets/images/alarm_light.png") no-repeat;
+  background: url("~@/assets/images/smoke_active.png") no-repeat;
   background-size: 150px 150px;
   animation:twinkle 0.5s linear infinite;
 }

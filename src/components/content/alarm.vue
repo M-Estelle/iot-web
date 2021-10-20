@@ -1,10 +1,11 @@
 <template>
-  <div class="alarm">
+  <div class="sensor">
     <div class="alarm-out">
       <div class="alarm-bg" :class="[isActive?'animation-twinkle':'']"></div>
       <img v-if="!isActive" class="sensor-iner" src="@/assets/images/alarm.png">
       <img v-else class="sensor-iner" src="@/assets/images/alarm_active.png">
     </div>
+    <div class="text"><slot>报警器</slot></div>
   </div>
 </template>
 
@@ -23,6 +24,17 @@ export default {
 </script>
 
 <style scoped>
+.senser{
+  width: 150px;
+  height: 200px;
+}
+.text{
+  width: 150px;
+  height: 50px;
+  text-align: center;
+  line-height: 50px;
+  font-size: 20px;
+}
 .alarm-out{
   width: 150px;
   height: 150px;

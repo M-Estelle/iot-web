@@ -7,7 +7,7 @@
       <el-tag v-if="returnState===10" type="danger">低于下限温度</el-tag>
       <el-tag v-if="returnState===20" type="success">正常</el-tag>
     </div>
-    <blower class="senser" :isActive="returnState===30"></blower>
+    <blower class="senser" :isActive="returnState===30">风扇1</blower>
     <alarm class="senser" :isActive="returnState===10"></alarm>
 <!--    <el-button @click="modify">修改</el-button>-->
   </div>

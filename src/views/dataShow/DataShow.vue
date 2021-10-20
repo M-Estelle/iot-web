@@ -131,22 +131,25 @@ export default {
    3.生成图表
     */
     newCharts(){
-        for (let item of this.title) {
-          // console.log(item.name)
-          if (item.name !== 'date')
-            this.list1.dataset.dimensions.push(item.name)
-        }
+      //插入图表的头
+      this.list1.dataset.dimensions=[]
+      for (let item of this.title) {
+        // console.log(item.name)
+        if (item.name !== 'date')
+          this.list1.dataset.dimensions.push(item.name)
+      }
 
-        this.list1.dataset.source = []
-        for (let item of this.tableData) {
-          this.list1.dataset.source.push(item)
-        }
-        for (let i = 1; i < this.title.length - 1; i++) {
-          this.list1.series.push({type: 'line'})
-        }
+      //插入图表数据
+      this.list1.dataset.source = []
+      for (let item of this.tableData) {
+        this.list1.dataset.source.push(item)
+      }
+      for (let i = 1; i < this.title.length - 1; i++) {
+        this.list1.series.push({type: 'line'})
+      }
 
-        // console.log(this.list1)
-        this.$refs.chart.changeCharts(this.list1)
+      //刷新图表
+      this.$refs.chart.changeCharts(this.list1)
 
     },
     /*
@@ -156,9 +159,11 @@ export default {
      */
     getCurrentData(){
       if(this.showCurrentChart){
+        //如果当前展示按钮为开则关闭
         this.showCurrentChart=false
       }
       let that=this
+
       sdkContest.getSensors(user.devIds,"").completed(function(res){
         // console.log(res.ResultObj[0].Datas)
         let beautify={}
@@ -174,7 +179,7 @@ export default {
     /*
     当搜索模块的组件检测到数据获取成功时调用
     1.生成搜索数据表格的合并行的数组
-    2.将数据渲染到图表视图上
+    2.将数据渲染到表格以及图表视图上
      */
     clearData(){
       this.tableSearch = []
@@ -189,12 +194,16 @@ export default {
 
       let arr=[]  //记录表格列合并数组
       for(let i=0;i<list.length;i++){
+        // 遍历返回结果，将每条数据插入图表中
         this.list2.push(list[i])
-         arr.push(list[i].PointDTO.length)
+        // 将同种类型的数据条数记录，用于表格的合并
+        arr.push(list[i].PointDTO.length)
+
         for(let j=0;j<list[i].PointDTO.length;j++){
           if(j!==0) {
             arr.push(0);
           }
+          // 遍历返回结果，将每条数据插入表格中
           let item={'ApiTag':list[i].ApiTag,'Value':list[i].PointDTO[j].Value,'RecordTime':list[i].PointDTO[j].RecordTime}
           this.tableSearch.push(item)
         }

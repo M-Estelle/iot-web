@@ -1,7 +1,7 @@
 <template>
 <div class="sensors">
    <img class="blower" :class="[isActive?'animation-turn':'']" src="@/assets/images/blower.png">
-
+   <div class="text"><slot>风扇</slot></div>
 </div>
 </template>
 
@@ -20,7 +20,17 @@ export default {
 </script>
 
 <style scoped>
-
+.senser{
+  width: 150px;
+  height: 200px;
+}
+.text{
+  width: 150px;
+  height: 50px;
+  text-align: center;
+  line-height: 50px;
+  font-size: 20px;
+}
 .animation-turn{
   animation:turn 0.5s linear infinite;
 }
