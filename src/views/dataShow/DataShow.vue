@@ -26,6 +26,16 @@
       <el-button @click="newCharts" type="primary" plain>生成图表</el-button>
       <achat :chat-data="list1" ref="chart"></achat>
     </div>
+    <!-- 图书管理系统数据   -->
+    <new-data-list
+        :dataTitle="readerTitle"
+        class="search"
+        :new-data="readerTableData"/>
+
+    <new-data-list
+        :dataTitle="bookTitle"
+        class="search"
+        :new-data="bookTableData"/>
 
     <!--   历史数据搜索模块    -->
     <div class="search label">模糊数据搜索</div>
@@ -77,7 +87,7 @@ import MoreForm from "@/components/content/MoreForm";
 import temperature from "@/components/content/temperature";
 
 import {dataTitle,sdkContest,searchTitle,user,ExelTitle} from "@/common/const";
-
+import {reader,readerlist,books} from "@/common/library"
 
 export default {
   name: "DataShow",
@@ -89,6 +99,10 @@ export default {
   },
   data() {
     return {
+      bookTitle:[],
+      bookTableData:[],
+      readerTitle:[],
+      readerTableData:[],
       //图像数据1
       title:[],//实时数据图表的表头
       tableData: [],//实时数据图表的数据
@@ -134,8 +148,6 @@ export default {
       //插入图表的头
       this.list1.dataset.dimensions=[]
       for (let item of this.title) {
-        // console.log(item.name)
-        if (item.name !== 'date')
           this.list1.dataset.dimensions.push(item.name)
       }
 
@@ -144,7 +156,7 @@ export default {
       for (let item of this.tableData) {
         this.list1.dataset.source.push(item)
       }
-      for (let i = 1; i < this.title.length - 1; i++) {
+      for (let i = 0; i < this.title.length - 1; i++) {
         this.list1.series.push({type: 'line'})
       }
 
@@ -217,7 +229,22 @@ export default {
     this.title=dataTitle
     this.searchTitle=searchTitle
     this.ExelTitle=ExelTitle
+
+    this.readerTitle=reader
+    this.readerTableData=readerlist
+    this.bookTitle=books
+
   },
+  mounted() {
+    let that=this
+    sdkContest.getBookList().completed(function(res){
+      // console.log(res.ResultObj)
+      for (let item of res.ResultObj){
+        // console.log(item)
+         that.bookTableData.push(item)
+      }
+    })
+  }
 }
 </script>
 

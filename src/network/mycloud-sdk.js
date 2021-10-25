@@ -8,7 +8,7 @@
 import $ from 'jquery'
 (function () {
 
-    var API_HOST = "http://192.168.8.103:8008";
+    var API_HOST = "http://47.115.200.37:8008";
     var AccessToken = ''
     function jsonp(url, fn, token, data, type,contentType)
     {
@@ -80,6 +80,22 @@ import $ from 'jquery'
             var completedCallback;
             if (!deviceId) throw "deviceId 不能为空";
             var url = API_HOST + "/Devices/" + deviceId;
+            jsonp(url, function (res) {
+                completedCallback && completedCallback(res);
+            }, AccessToken);
+            return {
+                completed: function (fn) {
+                    completedCallback = fn;
+                }
+            }
+        },
+        /*
+       * 查询书籍列表
+       * @param
+       */
+        getBookList: function () {
+            var completedCallback;
+            var url = API_HOST + "/books";
             jsonp(url, function (res) {
                 completedCallback && completedCallback(res);
             }, AccessToken);
