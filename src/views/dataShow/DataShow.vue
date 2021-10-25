@@ -3,29 +3,8 @@
 
     <temperature class="box"></temperature>
 
-    <!--    实时数据展示      -->
-    <div class="search label">实时数据
-      <el-button type="primary" class="floatr" @click="getCurrentData">获取实时数据</el-button>
-    </div>
+    <current-data-search></current-data-search>
 
-    <new-data-list
-        :dataTitle="title"
-        class="search"
-        :new-data="tableData"/>
-
-    <!-- 实时数据图表  <el-button @click="newCharts" type="primary" plain>生成图表</el-button> -->
-    <div class="search label">是否展示实时数据图表
-      <el-switch
-        :change="newCharts"
-        v-model="showCurrentChart"
-        active-text="on"
-        inactive-text="off">
-      </el-switch>
-    </div>
-    <div class="search clearfix min" v-if="showCurrentChart">
-      <el-button @click="newCharts" type="primary" plain>生成图表</el-button>
-      <achat :chat-data="list1" ref="chart"></achat>
-    </div>
     <!-- 图书管理系统数据   -->
     <new-data-list
         :dataTitle="readerTitle"
@@ -37,43 +16,8 @@
         class="search"
         :new-data="bookTableData"/>
 
-    <!--   历史数据搜索模块    -->
-    <div class="search label">模糊数据搜索</div>
-    <div class="search aborder">
-      <more-form @showSearchData="searchData" ></more-form>
-    </div>
+    <fuzzy-data-search></fuzzy-data-search>
 
-    <!--   历史数据搜索数据表格    -->
-    <new-data-list
-        :dataTitle="searchTitle"
-        class="search"
-        :new-data="tableSearch"
-        :spanArr="spanArr"/>
-
-    <!--   历史数据搜索数据导出功能    -->
-    <download-excel
-        class = "export-excel-wrapper search"
-        :data = "tableSearch"
-        :fields = "ExelTitle"
-        name = "数据搜索结果.xls">
-      <!-- 上面可以自定义自己的样式，还可以引用其他组件button -->
-      <el-button type="primary" size="small">导出EXCEL</el-button>
-    </download-excel>
-
-    <!-- 搜索数据图表  -->
-    <div class="search label">是否展示搜索数据图表
-      <el-switch
-          :change="newCharts"
-          v-model="showSearchChart"
-          active-text="on"
-          inactive-text="off">
-      </el-switch>
-    </div>
-    <div class="search clearfix min" v-if="showSearchChart">
-      <template v-for="(item,index) in list2">
-        <achat :title="item.ApiTag" :key="index" :ChatData="item.PointDTO"></achat>
-      </template>
-    </div>
 
 
   </div>
@@ -81,21 +25,21 @@
 
 <script>
 
-import achat from "@/components/achat";
 import NewDataList from "@/views/dataShow/childComonts/NewDataList";
-import MoreForm from "@/components/content/MoreForm";
 import temperature from "@/components/content/temperature";
+import FuzzyDataSearch from "@/views/dataShow/childComonts/FuzzyDataSearch";
+import CurrentDataSearch from "@/views/dataShow/childComonts/CurrentDataSearch";
 
-import {dataTitle,sdkContest,searchTitle,user,ExelTitle} from "@/common/const";
+import {sdkContest} from "@/common/const";
 import {reader,readerlist,books} from "@/common/library"
 
 export default {
   name: "DataShow",
   components:{
-    achat,
     NewDataList,
-    MoreForm,
-    temperature
+    temperature,
+    FuzzyDataSearch,
+    CurrentDataSearch
   },
   data() {
     return {
@@ -103,133 +47,12 @@ export default {
       bookTableData:[],
       readerTitle:[],
       readerTableData:[],
-      //图像数据1
-      title:[],//实时数据图表的表头
-      tableData: [],//实时数据图表的数据
-      searchTitle:[],//搜索数据表格的表头
-      tableSearch:[],//搜索数据表格的数据
-      spanArr:[],//搜索数据表格的合并行的数组
-      showCurrentChart:false,//是否展示实时数据图表
-      showSearchChart:false,//是否展示搜索数据的图表
-      list2:[],//搜索数据图表的内容
-      list1: {
-        legend: {},
-        tooltip: {},
-        dataset: {
-          // 提供一份数据。
-          dimensions: ['date'],
-          source: []//第一个值为x轴上的值，后面为点上的值
-        },
-        xAxis: {type: 'category'},
-        yAxis: {},
-        // 声明多个 bar 系列，默认情况下，每个系列会自动对应到 dataset 的每一列。{type: 'bar'}, {type: 'bar'},{type: 'bar'}
-        series: []
-      },
-      //以下为导出功能需要的
-      ExelTitle:{},
-      json_meta: [
-        [
-          {
-            " key ": " charset ",
-            " value ": " utf- 8 "
-          }
-        ]
-      ]
+
     }
   },
-  methods:{
-   /*
-   生成实时数据的图表
-   1.插入表头
-   2.插入图表数据
-   3.生成图表
-    */
-    newCharts(){
-      //插入图表的头
-      this.list1.dataset.dimensions=[]
-      for (let item of this.title) {
-          this.list1.dataset.dimensions.push(item.name)
-      }
 
-      //插入图表数据
-      this.list1.dataset.source = []
-      for (let item of this.tableData) {
-        this.list1.dataset.source.push(item)
-      }
-      for (let i = 0; i < this.title.length - 1; i++) {
-        this.list1.series.push({type: 'line'})
-      }
-
-      //刷新图表
-      this.$refs.chart.changeCharts(this.list1)
-
-    },
-    /*
-    1.获取实时数据
-    2.转化数据格式
-    3.往表格中插入数据
-     */
-    getCurrentData(){
-      if(this.showCurrentChart){
-        //如果当前展示按钮为开则关闭
-        this.showCurrentChart=false
-      }
-      let that=this
-
-      sdkContest.getSensors(user.devIds,"").completed(function(res){
-        // console.log(res.ResultObj[0].Datas)
-        let beautify={}
-        let myDate = new Date();
-        beautify['date']=myDate.toLocaleTimeString();
-        for (let item of res.ResultObj){
-          beautify[item.ApiTag]=item.Value
-        }
-        that.tableData.push(beautify)
-        // console.log(that.tableData)
-      })
-    },
-    /*
-    当搜索模块的组件检测到数据获取成功时调用
-    1.生成搜索数据表格的合并行的数组
-    2.将数据渲染到表格以及图表视图上
-     */
-    clearData(){
-      this.tableSearch = []
-      this.list2=[]
-    },
-    searchData(list){
-      this.clearData()
-      console.log(list)
-      if(this.showSearchChart){
-        this.showSearchChart=false
-      }//如果当前图表打开则关闭
-
-      let arr=[]  //记录表格列合并数组
-      for(let i=0;i<list.length;i++){
-        // 遍历返回结果，将每条数据插入图表中
-        this.list2.push(list[i])
-        // 将同种类型的数据条数记录，用于表格的合并
-        arr.push(list[i].PointDTO.length)
-
-        for(let j=0;j<list[i].PointDTO.length;j++){
-          if(j!==0) {
-            arr.push(0);
-          }
-          // 遍历返回结果，将每条数据插入表格中
-          let item={'ApiTag':list[i].ApiTag,'Value':list[i].PointDTO[j].Value,'RecordTime':list[i].PointDTO[j].RecordTime}
-          this.tableSearch.push(item)
-        }
-      }
-      this.spanArr=arr
-    },
-
-  },
   created() {
     //从const文件夹读取表头信息
-    this.title=dataTitle
-    this.searchTitle=searchTitle
-    this.ExelTitle=ExelTitle
-
     this.readerTitle=reader
     this.readerTableData=readerlist
     this.bookTitle=books
@@ -240,7 +63,12 @@ export default {
     sdkContest.getBookList().completed(function(res){
       // console.log(res.ResultObj)
       for (let item of res.ResultObj){
-        // console.log(item)
+        if(item.has_borrowed===0){
+          item['has_borrowed']="未被借阅"
+        }
+        else
+          item['has_borrowed']="已被借阅"
+        console.log(item)
          that.bookTableData.push(item)
       }
     })
