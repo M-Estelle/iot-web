@@ -1,7 +1,7 @@
 <template>
   <div class="line-form">
     <el-form :inline="true" :model="formInline" class="demo-form-inline">
-      <el-form-item label="查询">
+      <el-form-item label="请输入图书编号">
         <el-input v-model="formInline.user" placeholder="输入内容"></el-input>
       </el-form-item>
       <el-form-item>
@@ -25,6 +25,7 @@ export default {
   methods:{
     onSubmit() {
       console.log('submit!');
+      this.$emit("bookSearch",this.formInline.user)
     }
   }
 }

@@ -106,21 +106,16 @@ export default {
         Method: [
           { required: true, message: '请选择查询方式', trigger: 'change' }
         ],
-        StartDate: [
-          { type: 'date', required: true, message: '请选择起始时间', trigger: 'change' }
-        ],
-        EndDate: [
-          { type: 'date', required: true, message: '请选择结束时间', trigger: 'change' }
-        ],
-
+        // StartDate: [
+        //   { type: 'date', required: true, message: '请选择起始时间', trigger: 'change' }
+        // ],
+        // EndDate: [
+        //   { type: 'date', required: true, message: '请选择结束时间', trigger: 'change' }
+        // ],
       }
     }
   },
   methods: {
-    dateChangebirthday(val) {
-      console.log(val);
-      this.form.birthdayName = val;
-    },
     onSubmit() {
       let that=this
       this.loading=true

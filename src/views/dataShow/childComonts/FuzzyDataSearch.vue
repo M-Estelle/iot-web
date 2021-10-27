@@ -25,8 +25,8 @@
 
     <!-- 搜索数据图表  -->
     <div class="search label">是否展示搜索数据图表
+      <!--          :change="newCharts"-->
       <el-switch
-          :change="newCharts"
           v-model="showSearchChart"
           active-text="on"
           inactive-text="off">

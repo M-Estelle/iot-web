@@ -16,7 +16,12 @@ export const booklist=[
         'author':'吴伟定'
     }
 ]
-
+export const searchTitle=[
+    {title: '动作',name:'action'},
+    {title: '图书编号',name:'bookId'},
+    {title: '读者id',name:'readerId'},
+    {title: '记录时间',name:'RecordTime'},
+]
 export const reader=[
     {title: '读者id',name:'reader_id'},
     {title: '姓名',name:'name'},

@@ -11,14 +11,10 @@
         class="search"
         :new-data="readerTableData"/>
 
-    <new-data-list
-        :dataTitle="bookTitle"
-        class="search"
-        :new-data="bookTableData"/>
 
-    <fuzzy-data-search></fuzzy-data-search>
+<!--    <fuzzy-data-search></fuzzy-data-search>-->
 
-
+    <libray-search></libray-search>
 
   </div>
 </template>
@@ -27,24 +23,22 @@
 
 import NewDataList from "@/views/dataShow/childComonts/NewDataList";
 import temperature from "@/components/content/temperature";
-import FuzzyDataSearch from "@/views/dataShow/childComonts/FuzzyDataSearch";
+// import FuzzyDataSearch from "@/views/dataShow/childComonts/FuzzyDataSearch";
 import CurrentDataSearch from "@/views/dataShow/childComonts/CurrentDataSearch";
-
-import {sdkContest} from "@/common/const";
-import {reader,readerlist,books} from "@/common/library"
+import LibraySearch from "@/views/dataShow/childComonts/LibraySearch";
+import {reader,readerlist} from "@/common/library"
 
 export default {
   name: "DataShow",
   components:{
     NewDataList,
     temperature,
-    FuzzyDataSearch,
-    CurrentDataSearch
+    // FuzzyDataSearch,
+    CurrentDataSearch,
+    LibraySearch
   },
   data() {
     return {
-      bookTitle:[],
-      bookTableData:[],
       readerTitle:[],
       readerTableData:[],
 
@@ -55,24 +49,9 @@ export default {
     //从const文件夹读取表头信息
     this.readerTitle=reader
     this.readerTableData=readerlist
-    this.bookTitle=books
 
   },
-  mounted() {
-    let that=this
-    sdkContest.getBookList().completed(function(res){
-      // console.log(res.ResultObj)
-      for (let item of res.ResultObj){
-        if(item.has_borrowed===0){
-          item['has_borrowed']="未被借阅"
-        }
-        else
-          item['has_borrowed']="已被借阅"
-        console.log(item)
-         that.bookTableData.push(item)
-      }
-    })
-  }
+
 }
 </script>
 

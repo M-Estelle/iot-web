@@ -1,13 +1,189 @@
 <template>
-<div class="form"></div>
+  <div class="form">
+    <el-form ref="form"
+             :model="form"
+             label-width="120px"
+             label-position="left"
+             v-loading="loading"
+             element-loading-text="搜索中"
+             element-loading-spinner="el-icon-loading"
+             element-loading-background="rgba(0, 0, 0, 0.8)"
+             :rules="rules">
+
+      <el-form-item label="设备ID(必填)" prop="DeviceId">
+        <el-input v-model="form.DeviceId"></el-input>
+      </el-form-item>
+
+      <el-form-item label="读者id(选填)">
+        <el-input v-model="form.reader"></el-input>
+      </el-form-item>
+
+      <el-form-item label="图书编号(选填)">
+        <el-input v-model="form.book"></el-input>
+      </el-form-item>
+
+
+      <el-form-item label="起始时间" prop="StartDate">
+        <el-col :span="11">
+          <el-date-picker
+              type="datetime"
+              value-format=" yyyy-MM-dd HH:mm"
+              format="yyyy-MM-dd HH:mm"
+              placeholder="选择日期时间"
+              v-model="form.StartDate"
+              style="width: 100%;"></el-date-picker>
+        </el-col>
+
+      </el-form-item>
+
+      <el-form-item label="结束时间" prop="EndDate">
+        <el-col :span="11">
+          <el-date-picker
+              type="datetime"
+              value-format=" yyyy-MM-dd HH:mm"
+              format="yyyy-MM-dd HH:mm"
+              placeholder="选择日期时间"
+              v-model="form.EndDate"
+              style="width: 100%;"></el-date-picker>
+        </el-col>
+
+      </el-form-item>
+
+
+      <el-form-item label="数据条数(选填)">
+        <el-input v-model="form.PageSize"></el-input>
+      </el-form-item>
+
+      <el-form-item>
+        <el-button type="primary" @click="onSubmit">搜索</el-button>
+      </el-form-item>
+    </el-form>
+  </div>
 </template>
 
 <script>
+import {sdkContest} from "@/common/const";
 export default {
-  name: "LibraryMoreForm"
+  name: "LibraryMoreForm",
+  data() {
+    return {
+      loading:false,
+      form: {
+        DeviceId:'322860',
+        StartDate: '',
+        EndDate: '',
+        PageSize:20,
+        reader:'',
+        book:''
+      },
+      rules: {
+        DeviceId: [
+          { required: true, message: '请输入设备ID', trigger: 'blur' }
+        ],
+        Method: [
+          { required: true, message: '请选择查询方式', trigger: 'change' }
+        ],
+        StartDate: [
+          {  required: true, message: '请选择起始时间', trigger: 'change' }
+        ],
+        EndDate: [
+          {  required: true, message: '请选择结束时间', trigger: 'change' }
+        ],
+
+      }
+    }
+  },
+  methods: {
+    onSubmit() {
+      let isOK=true
+      this.$refs.form.validate((valid) => { // 提交前先验证表单
+        if (!valid) {
+          isOK=false
+          return
+        }
+      });
+      if (!isOK)
+        return
+      this.loading=true
+      // let realForm={
+      //     DeviceId:'322860',
+      //     ApiTags: 'book_borrow,book_return',
+      //     Method: '4',
+      //     Sort:'',
+      //     PageSize:20,
+      //     TimeAgo:'1'
+      // };
+      let realForm={
+            DeviceId:'322860',
+            ApiTags: 'book_borrow,book_return',
+            StartDate: '',
+            EndDate: '',
+            Method:6,
+            TimeAgo:-1,
+            PageIndex:1,
+            PageSize:20,
+          };
+
+      realForm['StartDate']=(this.form.StartDate+':00').trim()
+      realForm['EndDate']=(this.form.EndDate+':00').trim()
+      realForm['DeviceId']=this.form.DeviceId
+      realForm['PageSize']=this.form.PageSize
+      // console.log(realForm)
+      let that=this
+
+      sdkContest.getSensorData(realForm).completed(function(res){
+        that.loading=false
+        if(res.Status){
+          that.$message.error('查询失败');
+          console.log(res)
+          return
+        }
+        if(res.ResultObj.Count===0){
+          that.$message({
+            message: '当前查询范围内，没有数据',
+            type: 'warning'
+          });
+          return;
+        }
+        let list=[]
+        list=res.ResultObj.DataPoints
+        let returnlist=[]
+        for (let i=0;i<list.length;i++){
+          for(let j=0;j<list[i].PointDTO.length;j++){
+            let item={}
+            if(list[i].ApiTag==='book_borrow') {
+              item['action'] = '借书'
+            }
+            else{
+              item['action'] = '还书'
+            }
+            let info=list[i].PointDTO[j].Value.split(',')
+            item['bookId']=info[0]
+            item['readerId']=info[1]
+            item['RecordTime']=list[i].PointDTO[j].RecordTime
+            // console.log(item)
+            returnlist.push(item)
+          }
+        }
+        if(that.form.reader!==''){
+          returnlist=returnlist.filter(item=>item['readerId']===that.form.reader)
+        }
+        if(that.form.book!==''){
+          returnlist=returnlist.filter(item=>item['bookId']===that.form.book)
+        }
+        // console.log(returnlist)
+        that.$emit('showSearchData',returnlist);
+      })
+      console.log('submit!');
+    }
+  }
 }
+
+
 </script>
 
 <style scoped>
-
+/deep/.el-input{
+  width: auto;
+}
 </style>
