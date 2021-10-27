@@ -5,12 +5,26 @@
         :dataTitle="bookTitle"
         class="search"
         :new-data="bookTableData"/>
-    <LibraryMoreForm class="search aborder" @showSearchData="searchData"></LibraryMoreForm>
+    <LibraryMoreForm class="search aborder" @showSearchData="searchData" @returnChartDat="getChartData"></LibraryMoreForm>
     <!--   历史数据搜索数据表格    -->
     <new-data-list
         :dataTitle="searchTitle"
         class="search"
         :new-data="tableSearch"/>
+
+    <!-- 搜索数据图表  -->
+    <div class="search label">是否展示搜索数据图表
+      <!--          :change="newCharts"-->
+      <el-switch
+          v-model="showSearchChart"
+          active-text="on"
+          inactive-text="off">
+      </el-switch>
+    </div>
+    <div class="search clearfix min" v-if="showSearchChart">
+      <el-button @click="newCharts" type="primary" plain>生成图表</el-button>
+      <achat :chat-data="list1" ref="chart"></achat>
+    </div>
   </div>
 </template>
 
@@ -18,6 +32,7 @@
 import LineForm from "@/components/content/LineForm";
 import NewDataList from "@/views/dataShow/childComonts/NewDataList";
 import LibraryMoreForm from "@/components/content/LibraryMoreForm";
+import achat from "@/components/achat";
 
 import {books,searchTitle} from "@/common/library"
 import {sdkContest} from "@/common/const";
@@ -26,7 +41,8 @@ export default {
   components:{
     LineForm,
     NewDataList,
-    LibraryMoreForm
+    LibraryMoreForm,
+    achat
   },
   data(){
     return{
@@ -35,6 +51,19 @@ export default {
       searchTitle:[],//搜索数据表格的表头
       tableSearch:[],//搜索数据表格的数据
       showSearchChart:false,//是否展示搜索数据的图表
+      chartlist:[],
+      list1: {
+        legend: {},
+        tooltip: {},
+        dataset: {
+          // 提供一份数据。
+          source: []//第一个值为x轴上的值，后面为点上的值
+        },
+        xAxis: {type: 'category'},
+        yAxis: {},
+        // 声明多个 bar 系列，默认情况下，每个系列会自动对应到 dataset 的每一列。{type: 'bar'}, {type: 'bar'},{type: 'bar'}
+        series: []
+      },
     }
   },
   created() {
@@ -44,6 +73,36 @@ export default {
     // this.ExelTitle=ExelTitle
   },
   methods:{
+    /*
+   生成搜索数据的图表
+   1.插入表头
+   2.插入图表数据
+   3.生成图表
+    */
+    newCharts(){
+      //插入图表的头
+      this.list1.dataset.source = []
+      this.list1.dataset.source=[['data',this.chartlist[0].name,this.chartlist[1].name]]
+
+      //插入图表数据
+      console.log(this.chartlist)
+      for (let i=0;i<this.chartlist[0].list.length;i++) {
+        this.list1.dataset.source.push(
+            [this.chartlist[0].list[i].time,this.chartlist[0].list[i].count,this.chartlist[1].list[i].count]
+        )
+      }
+      for (let i = 0; i < 2; i++) {
+        this.list1.series.push({type: 'line'})
+      }
+
+      //刷新图表
+      this.$refs.chart.changeCharts(this.list1)
+
+    },
+    getChartData(list){
+      console.log(list)
+      this.chartlist=list
+    },
     searchBook(bookid){
       // console.log(bookid)
       let that=this
@@ -63,14 +122,19 @@ export default {
     },
     /*
   当搜索模块的组件检测到数据获取成功时调用
-  1.生成搜索数据表格的合并行的数组
-  2.将数据渲染到表格以及图表视图上
+  1.生成搜索数据表格
    */
     clearData(){
       this.tableSearch = []
-      this.list2=[]
     },
     searchData(list){
+      if(list.length===0){
+        this.$message({
+          message: '当前查询范围内，没有数据',
+          type: 'warning'
+        });
+        return;
+      }
       this.clearData()
       // console.log(list)
       if(this.showSearchChart){
@@ -78,14 +142,13 @@ export default {
       }//如果当前图表打开则关闭
 
       for(let i=0;i<list.length;i++){
-        // 遍历返回结果，将每条数据插入图表中
-        // this.list2.push(list[i])
         // 遍历返回结果，将每条数据插入表格中
         this.tableSearch.push(list[i])
 
       }
     },
   },
+
 
 }
 </script>

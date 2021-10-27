@@ -67,6 +67,7 @@ export default {
   name: "LibraryMoreForm",
   data() {
     return {
+      list2:[],//搜索数据图表的内容
       loading:false,
       form: {
         DeviceId:'322860',
@@ -95,6 +96,7 @@ export default {
   },
   methods: {
     onSubmit() {
+
       let isOK=true
       this.$refs.form.validate((valid) => { // 提交前先验证表单
         if (!valid) {
@@ -105,14 +107,6 @@ export default {
       if (!isOK)
         return
       this.loading=true
-      // let realForm={
-      //     DeviceId:'322860',
-      //     ApiTags: 'book_borrow,book_return',
-      //     Method: '4',
-      //     Sort:'',
-      //     PageSize:20,
-      //     TimeAgo:'1'
-      // };
       let realForm={
             DeviceId:'322860',
             ApiTags: 'book_borrow,book_return',
@@ -123,7 +117,6 @@ export default {
             PageIndex:1,
             PageSize:20,
           };
-
       realForm['StartDate']=(this.form.StartDate+':00').trim()
       realForm['EndDate']=(this.form.EndDate+':00').trim()
       realForm['DeviceId']=this.form.DeviceId
@@ -147,6 +140,7 @@ export default {
         }
         let list=[]
         list=res.ResultObj.DataPoints
+        that.getChartData(list,realForm.StartDate,realForm.EndDate)
         let returnlist=[]
         for (let i=0;i<list.length;i++){
           for(let j=0;j<list[i].PointDTO.length;j++){
@@ -175,8 +169,49 @@ export default {
         that.$emit('showSearchData',returnlist);
       })
       console.log('submit!');
-    }
-  }
+    },
+
+    getChartData(list,start,end){
+      let result1=this.formatEveryDay(start,end)
+      console.log(list)
+      for (let i=0;i<list[0].PointDTO.length;i++){
+        for (let j=0;j<result1.length;j++){
+          if (list[0].PointDTO[i].RecordTime.indexOf(result1[j].time)!==-1){
+            console.log(list[0].PointDTO[i].RecordTime,result1[j].time)
+            result1[j].count++
+          }
+        }
+      }
+      let return1={'name':list[0].ApiTag,'list':result1}
+      let result2=this.formatEveryDay(start,end)
+      for (let i=0;i<list[1].PointDTO.length;i++){
+        for (let j=0;j<result2.length;j++){
+          if (list[1].PointDTO[i].RecordTime.indexOf(result2[j].time)!==-1){
+            result2[j].count++
+          }
+        }
+      }
+      let return2={'name':list[1].ApiTag,'list':result2}
+      this.$emit('returnChartDat',[return1,return2])
+    },
+
+    formatEveryDay(start, end) {
+      let dateList = [];
+      var startTime = new Date(start);
+      var endTime =new Date(end);
+
+      while ((endTime.getTime() - startTime.getTime()) >= 0) {
+        var year = startTime.getFullYear();
+        var month = startTime.getMonth() + 1 < 10 ? '0' + (startTime.getMonth() + 1) : startTime.getMonth() + 1;
+        var day = startTime.getDate().toString().length == 1 ? "0" + startTime.getDate() : startTime.getDate();
+        dateList.push(new Object({'time':year + "-" + month + "-" + day,'count':0}));
+        startTime.setDate(startTime.getDate() + 1);
+      }
+      return dateList;
+    },
+  },
+
+
 }
 
 
