@@ -1,16 +1,28 @@
 <template>
   <div class="libraryseach">
+    <!--单个图书搜素-->
     <line-form class="search" @bookSearch="searchBook"></line-form>
     <new-data-list
         :dataTitle="bookTitle"
         class="search"
         :new-data="bookTableData"/>
+
     <LibraryMoreForm class="search aborder" @showSearchData="searchData" @returnChartDat="getChartData"></LibraryMoreForm>
     <!--   历史数据搜索数据表格    -->
     <new-data-list
         :dataTitle="searchTitle"
         class="search"
         :new-data="tableSearch"/>
+
+    <!--   历史数据搜索数据导出功能    -->
+    <download-excel
+        class = "export-excel-wrapper search"
+        :data = "tableSearch"
+        :fields = "ExelTitle"
+        name = "数据搜索结果.xls">
+      <!-- 上面可以自定义自己的样式，还可以引用其他组件button -->
+      <el-button type="primary" size="small">导出EXCEL</el-button>
+    </download-excel>
 
     <!-- 搜索数据图表  -->
     <div class="search label">是否展示搜索数据图表
@@ -34,7 +46,7 @@ import NewDataList from "@/views/dataShow/childComonts/NewDataList";
 import LibraryMoreForm from "@/components/content/LibraryMoreForm";
 import achat from "@/components/achat";
 
-import {books,searchTitle} from "@/common/library"
+import {books,searchTitle,ExelTitle} from "@/common/library"
 import {sdkContest} from "@/common/const";
 export default {
   name: "LibraySearch",
@@ -46,12 +58,13 @@ export default {
   },
   data(){
     return{
-      bookTitle:[],
-      bookTableData:[],
+      bookTitle:[],//图书表格表头
+      bookTableData:[],//图书表格内容
       searchTitle:[],//搜索数据表格的表头
       tableSearch:[],//搜索数据表格的数据
       showSearchChart:false,//是否展示搜索数据的图表
-      chartlist:[],
+      chartlist:[],//接受子组件返回的图表的数据
+      ExelTitle:{},
       list1: {
         legend: {},
         tooltip: {},
@@ -70,7 +83,7 @@ export default {
     //从const文件夹读取表头信息
     this.bookTitle=books
     this.searchTitle=searchTitle
-    // this.ExelTitle=ExelTitle
+    this.ExelTitle=ExelTitle
   },
   methods:{
     /*

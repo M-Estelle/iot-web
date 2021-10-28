@@ -22,6 +22,14 @@ export const searchTitle=[
     {title: '读者id',name:'readerId'},
     {title: '记录时间',name:'RecordTime'},
 ]
+
+export const ExelTitle={
+    '动作':'action',
+    '图书编号':'bookId',
+    '读者id':'readerId',
+    '记录时间':'RecordTime'
+}
+
 export const reader=[
     {title: '读者id',name:'reader_id'},
     {title: '姓名',name:'name'},

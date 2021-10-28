@@ -123,7 +123,7 @@ export default {
       realForm['PageSize']=this.form.PageSize
       // console.log(realForm)
       let that=this
-
+      // 提交表单查询
       sdkContest.getSensorData(realForm).completed(function(res){
         that.loading=false
         if(res.Status){
@@ -140,8 +140,10 @@ export default {
         }
         let list=[]
         list=res.ResultObj.DataPoints
+        // 处理返回结果，获取折线图所需数据
         that.getChartData(list,realForm.StartDate,realForm.EndDate)
         let returnlist=[]
+        // 处理返回结果，获取表格所需数据
         for (let i=0;i<list.length;i++){
           for(let j=0;j<list[i].PointDTO.length;j++){
             let item={}
@@ -159,6 +161,7 @@ export default {
             returnlist.push(item)
           }
         }
+        // 对获取的数据根据用户输入的读者和图书编号进行过滤
         if(that.form.reader!==''){
           returnlist=returnlist.filter(item=>item['readerId']===that.form.reader)
         }
@@ -166,12 +169,21 @@ export default {
           returnlist=returnlist.filter(item=>item['bookId']===that.form.book)
         }
         // console.log(returnlist)
+        // 返回结果
         that.$emit('showSearchData',returnlist);
       })
       console.log('submit!');
     },
-
+    /*
+    处理返回的数据，并将结果传到父组件
+    list：api返回结果
+    start：用户输入的起始时间
+    end：用户输入的结束时间
+    1.对结果进行遍历，求出时间段内每天进行还书、借书动作的次数
+    2.返回结果
+     */
     getChartData(list,start,end){
+      // 获取时间段内的每一天
       let result1=this.formatEveryDay(start,end)
       console.log(list)
       for (let i=0;i<list[0].PointDTO.length;i++){
@@ -194,7 +206,11 @@ export default {
       let return2={'name':list[1].ApiTag,'list':result2}
       this.$emit('returnChartDat',[return1,return2])
     },
-
+    /*
+    获取一定时间段内的每一天
+    start：开始时间
+    end：结束时间
+     */
     formatEveryDay(start, end) {
       let dateList = [];
       var startTime = new Date(start);
