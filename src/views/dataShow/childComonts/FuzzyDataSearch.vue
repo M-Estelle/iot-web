@@ -34,7 +34,7 @@
     </div>
     <div class="search clearfix min" v-if="showSearchChart">
       <template v-for="(item,index) in list2">
-        <achat :title="item.ApiTag" :key="index" :ChatData="item.PointDTO"></achat>
+        <achat v-if="checkNumber(item.PointDTO[0].Value)" :title="item.ApiTag" :key="index" :ChatData="item.PointDTO"></achat>
       </template>
     </div>
   </div>
@@ -72,7 +72,16 @@ export default {
       ]
     }
   },
+
   methods:{
+    //验证字符串是否是数字
+    checkNumber(theObj) {
+      var reg = /^[0-9]+.?[0-9]*$/;
+      if (reg.test(theObj)) {
+        return true;
+      }
+      return false;
+    },
     /*
    当搜索模块的组件检测到数据获取成功时调用
    1.生成搜索数据表格的合并行的数组
@@ -84,7 +93,7 @@ export default {
     },
     searchData(list){
       this.clearData()
-      console.log(list)
+      // console.log(list)
       if(this.showSearchChart){
         this.showSearchChart=false
       }//如果当前图表打开则关闭
@@ -105,6 +114,7 @@ export default {
           this.tableSearch.push(item)
         }
       }
+      console.log(this.list2[0].PointDTO)
       this.spanArr=arr
     },
 

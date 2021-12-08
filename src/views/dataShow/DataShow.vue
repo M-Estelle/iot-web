@@ -12,7 +12,7 @@
         :new-data="readerTableData"/>
 
 
-<!--    <fuzzy-data-search></fuzzy-data-search>-->
+    <fuzzy-data-search></fuzzy-data-search>
 
     <libray-search></libray-search>
 
@@ -23,7 +23,7 @@
 
 import NewDataList from "@/views/dataShow/childComonts/NewDataList";
 import temperature from "@/components/content/temperature";
-// import FuzzyDataSearch from "@/views/dataShow/childComonts/FuzzyDataSearch";
+import FuzzyDataSearch from "@/views/dataShow/childComonts/FuzzyDataSearch";
 import CurrentDataSearch from "@/views/dataShow/childComonts/CurrentDataSearch";
 import LibraySearch from "@/views/dataShow/childComonts/LibraySearch";
 import {reader,readerlist} from "@/common/library"
@@ -33,7 +33,7 @@ export default {
   components:{
     NewDataList,
     temperature,
-    // FuzzyDataSearch,
+    FuzzyDataSearch,
     CurrentDataSearch,
     LibraySearch
   },

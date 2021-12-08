@@ -107,10 +107,10 @@ export default {
           { required: true, message: '请选择查询方式', trigger: 'change' }
         ],
         // StartDate: [
-        //   { type: 'date', required: true, message: '请选择起始时间', trigger: 'change' }
+        //   {  required: true, message: '请选择起始时间', trigger: 'change' }
         // ],
         // EndDate: [
-        //   { type: 'date', required: true, message: '请选择结束时间', trigger: 'change' }
+        //   {  required: true, message: '请选择结束时间', trigger: 'change' }
         // ],
       }
     }
@@ -119,9 +119,13 @@ export default {
     onSubmit() {
       let that=this
       this.loading=true
-      sdkContest.getSensorData(this.form).completed(function(res){
+      let submitform=this.form;
+      submitform['StartDate']=(this.form.StartDate+':00').trim()
+      submitform['EndDate']=(this.form.EndDate+':00').trim()
+      sdkContest.getSensorData(submitform).completed(function(res){
         that.loading=false
         if(res.Status){
+          // console.log(res)
           that.$message.error('查询失败');
           return
         }
@@ -135,7 +139,7 @@ export default {
         // console.log(res);
         let list=[]
         list=res.ResultObj.DataPoints
-        console.log(list)
+        // console.log(list)
         that.$emit('showSearchData',list);
       })
       console.log('submit!');

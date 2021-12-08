@@ -91,6 +91,7 @@ export default {
       }
       params = this.value
       sdkContest.Cmds(user.devIds,this.Api.ApiTag,params).completed(function(res){
+        console.log(res)
         if(res.Status) {
           that.$message({
             showClose: true,
