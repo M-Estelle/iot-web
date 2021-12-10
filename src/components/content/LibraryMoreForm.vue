@@ -10,7 +10,7 @@
              element-loading-background="rgba(0, 0, 0, 0.8)"
              :rules="rules">
 
-      <el-form-item label="设备ID(必填)" prop="DeviceId">
+      <el-form-item label="设备ID(必填)" prop="DeviceId" >
         <el-input v-model="form.DeviceId"></el-input>
       </el-form-item>
 
