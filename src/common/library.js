@@ -58,4 +58,8 @@ export const dataTitle=[
     {title: '时间',name:'date'},
     {title: '非法进入报警',name:'enter_alarm'},
     {title: '烟雾浓度',name:'smoke'},
+    {title: '湿度',name:'humidity'},
+    {title: '光照',name:'light'},
+    {title: '电机',name:'MOTOR'},
+    {title: '电机',name:'MOTOR_VERSE'},
 ]

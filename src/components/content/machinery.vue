@@ -11,7 +11,7 @@ export default {
   name: "machinery",
   props:{
     isActive: {
-      type: String,
+      type: Number,
       default(){
         return 0
       }

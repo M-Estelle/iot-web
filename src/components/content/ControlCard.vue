@@ -90,6 +90,51 @@ export default {
         return
       }
       params = this.value
+      //如果设置的传感器是电机正向或逆向转动，先将其对立方向的值置为0，再正常发送请求。否则直接发送请求
+      if (this.Api.ApiTag=='motor_ctrl'){
+        sdkContest.Cmds(user.devIds,'motor_verse_ctrl',0).completed(function(res){
+          console.log(res)
+          if(res.Status) {
+            that.$message({
+              showClose: true,
+              message: res.Msg
+            });
+          }
+          else{
+            that.submitOut(params)
+            that.$message({
+              message: '设置成功',
+              type: 'success'
+            });
+          }
+        })
+
+      }
+      else if (this.Api.ApiTag=='motor_verse_ctrl'){
+        sdkContest.Cmds(user.devIds,'motor_ctrl',0).completed(function(res){
+          console.log(res)
+          if(res.Status) {
+            that.$message({
+              showClose: true,
+              message: res.Msg
+            });
+          }
+          else{
+            that.submitOut(params)
+            that.$message({
+              message: '设置成功',
+              type: 'success'
+            });
+          }
+        })
+      }
+      else {
+        this.submitOut()
+      }
+
+    },
+    submitOut(params){
+      let that = this
       sdkContest.Cmds(user.devIds,this.Api.ApiTag,params).completed(function(res){
         console.log(res)
         if(res.Status) {

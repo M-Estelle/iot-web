@@ -92,7 +92,7 @@ export default {
       sdkContest.getDeviceInfo(user.devIds).completed(function (res){
         // console.log(res.ResultObj)
         that.sensors=res.ResultObj.Sensors;
-        console.log(that.sensors)
+        // console.log(that.sensors)
       })
     }
   },

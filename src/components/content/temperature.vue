@@ -10,7 +10,7 @@
     <blower class="senser" :isActive="returnState===30">风扇1</blower>
     <blower class="senser" :isActive="returnState===20">风扇2</blower>
     <alarm class="senser" :isActive="returnState===10"></alarm>
-    <machinery :isActive="0"></machinery>
+    <machinery class="senser" :isActive="0"></machinery>
 <!--    <el-button @click="modify">修改</el-button>-->
   </div>
 </template>
@@ -62,7 +62,7 @@ export default {
     getTemperature(){
       let that=this
       sdkContest.getDeviceInfo(user.devIds).completed(function(res){
-        console.log(res)
+        // console.log(res)
         for(let item of res.ResultObj.Sensors){
           if(item.ApiTag==="temp_up" && that.temp_up !== item.Value){
             that.temp_up = item.Value

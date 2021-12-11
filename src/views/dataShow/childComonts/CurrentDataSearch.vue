@@ -99,8 +99,12 @@ export default {
         this.showCurrentChart=false
       }
       let that=this
-
-      sdkContest.getSensors(user.devIds,"").completed(function(res){
+      let titlearr=[]
+      for(let i=1;i<this.title.length;i++){
+        titlearr.push([this.title[i].name])
+      }
+      let titlestring=titlearr.join(',')
+      sdkContest.getSensors(user.devIds,titlestring).completed(function(res){
         // console.log(res.ResultObj[0].Datas)
         let beautify={}
         let myDate = new Date();
